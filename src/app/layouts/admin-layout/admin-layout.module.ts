@@ -1,0 +1,33 @@
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
+import { AdminLayoutRoutes } from './admin-layout.routing';
+
+import { ConsultasDM }       from '../../pages/consultasDM/consultasDM.component';
+import { ConsultasF2 }            from '../../pages/consultasF2/consultasF2.component';
+import { AdminUsuarios }           from '../../pages/adminUsuarios/adminUsuarios.component';
+import { Salir }            from '../../pages/salir/salir.component';
+
+//ConsultasDM
+import { TipoCambio }      from '../../pages/tipoCambio/tipoCAmbio.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+@NgModule({
+  imports: [
+    CommonModule,
+    RouterModule.forChild(AdminLayoutRoutes),
+    FormsModule,
+    NgbModule
+  ],
+  declarations: [
+    ConsultasDM,
+    ConsultasF2,
+    AdminUsuarios,
+    Salir,
+    TipoCambio
+  ]
+})
+
+export class AdminLayoutModule {}
