@@ -53,11 +53,11 @@ export class CreacionAlmacen implements OnInit {
 
         this.createPdfASTG();
 
-        this.createPdfWHCESTG();
+        //this.createPdfWHCESTG();
 
-        this.createPdfVCWSTG();
+        //THIS.createPdfVCWSTG();
 
-        this.createPdfVXMCPSTG();
+        //this.createPdfVXMCPSTG();
 
     }
 
@@ -108,6 +108,15 @@ export class CreacionAlmacen implements OnInit {
     }
 
     createPdfWHSTG() {
+
+
+        var rows = [];
+
+        this.dataResponseTableWHSTG.forEach(element => {
+            var temp = [element.basedatos, element.tabla, element.mensajeerror, element.direccionespostal, element.moneda, element.fechacreacion];
+            rows.push(temp);
+        })
+
         var doc1 = new jsPDF();
 
         doc1.setFontSize(18);
@@ -118,7 +127,7 @@ export class CreacionAlmacen implements OnInit {
 
         (doc1 as any).autoTable({
             head: this.head,
-            body: this.dataResponseTableWHSTG,
+            body: rows,
             theme: 'striped',
             didDrawCell: data => {
                 console.log(data.column.index)
@@ -135,6 +144,14 @@ export class CreacionAlmacen implements OnInit {
     }
 
     createPdfASTG() {
+
+        var rows = [];
+
+        this.dataResponseTableASTG.forEach(element => {
+            var temp = [element.basedatos, element.tabla, element.mensajeerror, element.direccionespostal, element.addrtype, element.fechacreacion];
+            rows.push(temp);
+        })
+
         var doc1 = new jsPDF();
 
         doc1.setFontSize(18);
@@ -145,7 +162,7 @@ export class CreacionAlmacen implements OnInit {
 
         (doc1 as any).autoTable({
             head: this.head,
-            body: this.dataResponseTableASTG,
+            body: rows,
             theme: 'striped',
             didDrawCell: data => {
                 console.log(data.column.index)
@@ -162,6 +179,14 @@ export class CreacionAlmacen implements OnInit {
     }
 
     createPdfWHCESTG() {
+
+        var rows = [];
+
+        this.dataResponseTableWHCESTG.forEach(element => {
+            var temp = [element.basedatos, element.tabla, element.mensajeerror, element.direccionespostal, element.moneda, element.addrtype, element.fechacreacion];
+            rows.push(temp);
+        })
+
         var doc1 = new jsPDF();
 
         doc1.setFontSize(18);
@@ -172,7 +197,7 @@ export class CreacionAlmacen implements OnInit {
 
         (doc1 as any).autoTable({
             head: this.head,
-            body: this.dataResponseTableWHCESTG,
+            body: rows,
             theme: 'striped',
             didDrawCell: data => {
                 console.log(data.column.index)
@@ -189,6 +214,16 @@ export class CreacionAlmacen implements OnInit {
     }
 
     createPdfVCWSTG() {
+
+        var rows = [];
+
+        this.dataResponseTableVCWSTG.forEach(element => {
+            var temp = [element.basedatos, element.tabla, element.mensajeerror, element.direccionespostal, element.moneda, element.addrtype, element.fechacreacion];
+            rows.push(temp);
+        })
+
+        var doc1 = new jsPDF();
+
         var doc1 = new jsPDF();
 
         doc1.setFontSize(18);
@@ -199,7 +234,7 @@ export class CreacionAlmacen implements OnInit {
 
         (doc1 as any).autoTable({
             head: this.head,
-            body: this.dataResponseTableVCWSTG,
+            body: rows,
             theme: 'striped',
             didDrawCell: data => {
                 console.log(data.column.index)
@@ -216,6 +251,14 @@ export class CreacionAlmacen implements OnInit {
     }
 
     createPdfVXMCPSTG() {
+
+        var rows = [];
+
+        this.dataResponseTableVXMCPSTG.forEach(element => {
+            var temp = [element.basedatos, element.tabla, element.mensajeerror, element.direccionespostal, element.moneda, element.addrtype, element.fechacreacion];
+            rows.push(temp);
+        })
+
         var doc1 = new jsPDF();
 
         doc1.setFontSize(18);
@@ -226,7 +269,7 @@ export class CreacionAlmacen implements OnInit {
 
         (doc1 as any).autoTable({
             head: this.head,
-            body: this.dataResponseTableVXMCPSTG,
+            body: rows,
             theme: 'striped',
             didDrawCell: data => {
                 console.log(data.column.index)

@@ -52,7 +52,7 @@ export class JerarquiaOrganizativa implements OnInit {
 
     this.createPdfCHSTG();
 
-    this.createPdfDSTG();
+    //this.createPdfDSTG();
 
     this.createPdfRSTG();
 
@@ -105,6 +105,14 @@ export class JerarquiaOrganizativa implements OnInit {
   }
 
   createPdfASGT() {
+
+    var rows = [];
+
+    this.dataResponseTableASGT.forEach(element => {
+      var temp = [element.basedatos, element.tabla, element.mensajeerror, element.id, element.nombrearea, element.fechacreacion, element.asesordistrito];
+      rows.push(temp);
+    })
+
     var doc1 = new jsPDF();
 
     doc1.setFontSize(18);
@@ -115,12 +123,9 @@ export class JerarquiaOrganizativa implements OnInit {
 
     (doc1 as any).autoTable({
       head: this.head,
-      body: this.dataResponseTableASGT,
+      body: rows,
       theme: 'striped',
       didDrawCell: data => {
-        console.log(data.column.index)
-        console.log(data.column)
-        console.log(data)
       }
     })
 
@@ -132,6 +137,14 @@ export class JerarquiaOrganizativa implements OnInit {
   }
 
   createPdfCSTG() {
+
+    var rows = [];
+
+    this.dataResponseTableCSTG.forEach(element => {
+      var temp = [element.basedatos, element.tabla, element.mensajeerror, element.id, element.nombrearea, element.fechacreacion, element.asesordistrito];
+      rows.push(temp);
+    })
+
     var doc1 = new jsPDF();
 
     doc1.setFontSize(18);
@@ -142,12 +155,9 @@ export class JerarquiaOrganizativa implements OnInit {
 
     (doc1 as any).autoTable({
       head: this.head,
-      body: this.dataResponseTableCSTG,
+      body: rows,
       theme: 'striped',
       didDrawCell: data => {
-        console.log(data.column.index)
-        console.log(data.column)
-        console.log(data)
       }
     })
 
@@ -159,6 +169,14 @@ export class JerarquiaOrganizativa implements OnInit {
   }
 
   createPdfCHSTG() {
+
+    var rows = [];
+
+    this.dataResponseTableCHSTG.forEach(element => {
+      var temp = [element.basedatos, element.tabla, element.mensajeerror, element.id, element.nombrearea, element.fechacreacion, element.asesordistrito];
+      rows.push(temp);
+    })
+
     var doc1 = new jsPDF();
 
     doc1.setFontSize(18);
@@ -169,12 +187,9 @@ export class JerarquiaOrganizativa implements OnInit {
 
     (doc1 as any).autoTable({
       head: this.head,
-      body: this.dataResponseTableCHSTG,
+      body: rows,
       theme: 'striped',
       didDrawCell: data => {
-        console.log(data.column.index)
-        console.log(data.column)
-        console.log(data)
       }
     })
 
@@ -186,6 +201,14 @@ export class JerarquiaOrganizativa implements OnInit {
   }
 
   createPdfDSTG() {
+
+    var rows = [];
+
+    this.dataResponseTableDSTG.forEach(element => {
+      var temp = [element.basedatos, element.tabla, element.mensajeerror, element.id, element.nombrearea, element.fechacreacion, element.asesordistrito];
+      rows.push(temp);
+    })
+
     var doc1 = new jsPDF();
 
     doc1.setFontSize(18);
@@ -196,12 +219,9 @@ export class JerarquiaOrganizativa implements OnInit {
 
     (doc1 as any).autoTable({
       head: this.head,
-      body: this.dataResponseTableDSTG,
+      body: rows,
       theme: 'striped',
       didDrawCell: data => {
-        console.log(data.column.index)
-        console.log(data.column)
-        console.log(data)
       }
     })
 
@@ -213,6 +233,14 @@ export class JerarquiaOrganizativa implements OnInit {
   }
 
   createPdfRSTG() {
+
+    var rows = [];
+
+    this.dataResponseTableRSTG.forEach(element => {
+      var temp = [element.basedatos, element.tabla, element.mensajeerror, element.id, element.nombrearea, element.fechacreacion, element.asesordistrito];
+      rows.push(temp);
+    })
+
     var doc1 = new jsPDF();
 
     doc1.setFontSize(18);
@@ -223,12 +251,9 @@ export class JerarquiaOrganizativa implements OnInit {
 
     (doc1 as any).autoTable({
       head: this.head,
-      body: this.dataResponseTableRSTG,
+      body: rows,
       theme: 'striped',
       didDrawCell: data => {
-        console.log(data.column.index)
-        console.log(data.column)
-        console.log(data)
       }
     })
 

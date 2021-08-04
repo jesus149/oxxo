@@ -39,7 +39,7 @@ export class TipoCambio implements OnInit {
 
     this.createPdfCRSTG();
 
-    this.createPdFDCTSTG();
+    //this.createPdFDCTSTG();
 
   }
 
@@ -70,6 +70,13 @@ export class TipoCambio implements OnInit {
 
   createPdfCRSTG() {
 
+    var rows = [];
+
+    this.dataResponseTableCRSTG.forEach(element => {
+      var temp = [element.basedatos, element.tabla, element.mensajeerror, element.tipocambio, element.moneda, element.fechaactivacion];
+      rows.push(temp);
+    })
+
     var doc1 = new jsPDF();
 
     doc1.setFontSize(18);
@@ -77,10 +84,9 @@ export class TipoCambio implements OnInit {
     doc1.setFontSize(11);
     doc1.setTextColor(100);
 
-
     (doc1 as any).autoTable({
       head: this.head,
-      body: this.dataResponseTableCRSTG,
+      body: rows,
       theme: 'striped',
       didDrawCell: data => {
         console.log(data.column.index)
@@ -98,6 +104,13 @@ export class TipoCambio implements OnInit {
 
   createPdFDCTSTG() {
 
+    var rows = [];
+
+    this.dataResponseTableDCTSTG.forEach(element => {
+      var temp = [element.basedatos, element.tabla, element.mensajeerror, element.tipocambio, element.moneda, element.fechaactivacion];
+      rows.push(temp);
+    })
+
     var doc2 = new jsPDF();
 
     doc2.setFontSize(18);
@@ -108,12 +121,9 @@ export class TipoCambio implements OnInit {
 
     (doc2 as any).autoTable({
       head: this.head,
-      body: this.dataResponseTableCRSTG,
+      body: rows,
       theme: 'striped',
       didDrawCell: data => {
-        console.log(data.column.index)
-        console.log(data.column)
-        console.log(data)
       }
     })
 
