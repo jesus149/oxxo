@@ -40,7 +40,7 @@ export class JerarquiaOrganizativa implements OnInit {
   dataResponseTableRSTG = null;
 
   constructor(private http: HttpClient, public datepipe: DatePipe) { }
-  
+
   ngOnInit(): void {
   }
 
@@ -66,35 +66,35 @@ export class JerarquiaOrganizativa implements OnInit {
       let fInicio = this.datepipe.transform(fechainicio, 'yyyy-MM-dd');
       let fFinal = this.datepipe.transform(fechaFin, 'yyyy-MM-dd');
 
-      this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr001/currency_rates_stg/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
+      this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr002/area_stg/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
         console.log(response);
         this.dataResponseASGT = new MatTableDataSource<any>(response['items'])
         this.dataResponseASGT.paginator = this.paginator;
         this.dataResponseTableASGT = response['items'];
       });
 
-      this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr001/currency_rates_stg/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
+      this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr002/chain_stg/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
         console.log(response);
         this.dataResponseCSTG = new MatTableDataSource<any>(response['items'])
         this.dataResponseCSTG.paginator = this.paginator;
         this.dataResponseTableCSTG = response['items'];
       });
 
-      this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr001/currency_rates_stg/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
+      this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr002/comphead_stg/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
         console.log(response);
         this.dataResponseCHSTG = new MatTableDataSource<any>(response['items'])
         this.dataResponseCHSTG.paginator = this.paginator;
         this.dataResponseTableCHSTG = response['items'];
       });
 
-      this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr001/currency_rates_stg/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
+      this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr002/district_stg/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
         console.log(response);
         this.dataResponseDSTG = new MatTableDataSource<any>(response['items'])
         this.dataResponseDSTG.paginator = this.paginator;
         this.dataResponseTableDSTG = response['items'];
       });
 
-      this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr001/currency_rates_stg/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
+      this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr002/region_stg/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
         console.log(response);
         this.dataResponseRSTG = new MatTableDataSource<any>(response['items'])
         this.dataResponseRSTG.paginator = this.paginator;
