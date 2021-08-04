@@ -24,6 +24,9 @@ export class CreacionAlmacen implements OnInit {
     displayedColumns1: string[] = ['basedatos', 'tabla', 'mensajeerror', 'direccionespostal', 'moneda', 'fechacreacion'];
     displayedColumns2: string[] = ['basedatos', 'tabla', 'mensajeerror', 'direccionespostal', 'addrtype', 'fechacreacion'];
     head = [['baseDatos', 'tabla', 'mensajeError', 'direccionesPostal', 'moneda', 'addrType', 'fechaCreacion']];
+    head1 = [['baseDatos', 'tabla', 'mensajeError', 'direccionesPostal', 'moneda', 'fechaCreacion']];
+    head2 = [['baseDatos', 'tabla', 'mensajeError', 'direccionesPostal', 'addrType', 'fechaCreacion']];
+
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
     @ViewChild(MatSort, { static: true }) sort: MatSort;
 
@@ -126,13 +129,10 @@ export class CreacionAlmacen implements OnInit {
 
 
         (doc1 as any).autoTable({
-            head: this.head,
+            head: this.head1,
             body: rows,
             theme: 'striped',
             didDrawCell: data => {
-                console.log(data.column.index)
-                console.log(data.column)
-                console.log(data)
             }
         })
 
@@ -140,7 +140,7 @@ export class CreacionAlmacen implements OnInit {
         doc1.output('dataurlnewwindow')
 
         // below line for Download PDF document  
-        doc1.save('Consultas_de_Alertas_Jerarquia_Organizativa_AREA_STG.pdf');
+        doc1.save('Consultas_de_Alertas_Jerarquia_Organizativa_WH_STG.pdf');
     }
 
     createPdfASTG() {
@@ -161,13 +161,10 @@ export class CreacionAlmacen implements OnInit {
 
 
         (doc1 as any).autoTable({
-            head: this.head,
+            head: this.head2,
             body: rows,
             theme: 'striped',
             didDrawCell: data => {
-                console.log(data.column.index)
-                console.log(data.column)
-                console.log(data)
             }
         })
 
@@ -175,7 +172,7 @@ export class CreacionAlmacen implements OnInit {
         doc1.output('dataurlnewwindow')
 
         // below line for Download PDF document  
-        doc1.save('Consultas_de_Alertas_Jerarquia_Organizativa_CHAIN_STG.pdf');
+        doc1.save('Consultas_de_Alertas_Jerarquia_Organizativa_ADDR_STG.pdf');
     }
 
     createPdfWHCESTG() {
@@ -200,9 +197,6 @@ export class CreacionAlmacen implements OnInit {
             body: rows,
             theme: 'striped',
             didDrawCell: data => {
-                console.log(data.column.index)
-                console.log(data.column)
-                console.log(data)
             }
         })
 
@@ -210,7 +204,7 @@ export class CreacionAlmacen implements OnInit {
         doc1.output('dataurlnewwindow')
 
         // below line for Download PDF document  
-        doc1.save('Consultas_de_Alertas_Jerarquia_Organizativa_COMPHEAD_STG.pdf');
+        doc1.save('Consultas_de_Alertas_Jerarquia_Organizativa_WH_CFA_EXT_STG.pdf');
     }
 
     createPdfVCWSTG() {
@@ -237,9 +231,6 @@ export class CreacionAlmacen implements OnInit {
             body: rows,
             theme: 'striped',
             didDrawCell: data => {
-                console.log(data.column.index)
-                console.log(data.column)
-                console.log(data)
             }
         })
 
@@ -247,7 +238,7 @@ export class CreacionAlmacen implements OnInit {
         doc1.output('dataurlnewwindow')
 
         // below line for Download PDF document  
-        doc1.save('Consultas_de_Alertas_Jerarquia_Organizativa_DISTRICT_STG.pdf');
+        doc1.save('Consultas_de_Alertas_Jerarquia_Organizativa_V_CFGS_WH_STG.pdf');
     }
 
     createPdfVXMCPSTG() {
@@ -272,9 +263,6 @@ export class CreacionAlmacen implements OnInit {
             body: rows,
             theme: 'striped',
             didDrawCell: data => {
-                console.log(data.column.index)
-                console.log(data.column)
-                console.log(data)
             }
         })
 
@@ -282,6 +270,6 @@ export class CreacionAlmacen implements OnInit {
         doc1.output('dataurlnewwindow')
 
         // below line for Download PDF document  
-        doc1.save('Consultas_de_Alertas_Jerarquia_Organizativa_REGION_STG.pdf');
+        doc1.save('Consultas_de_Alertas_Jerarquia_Organizativa_V_XXFC_MAPEO_CEDIS_PLAZA_STG.pdf');
     }
 }
