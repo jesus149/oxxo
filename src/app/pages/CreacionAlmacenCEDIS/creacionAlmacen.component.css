@@ -1,0 +1,17 @@
+.separa {
+    margin-right: 15px;
+  }
+  
+  table {
+    width: 100%;
+  }
+  
+  th.mat-sort-header-sorted {
+    color: black;
+  }
+  
+  .flujoLink {
+    color           : #007bff;
+    text-decoration : none;
+    background-color: transparent;
+  }

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
+import { DatePipe } from '@angular/common'
 
 import { AdminLayoutRoutes } from './admin-layout.routing';
 
@@ -13,6 +13,9 @@ import { Salir } from '../../pages/salir/salir.component';
 
 //ConsultasDM
 import { TipoCambio } from '../../pages/tipoCambio/tipoCAmbio.component';
+import { JerarquiaOrganizativa } from '../../pages/jerarquiaOrganizativa/jerarquiaOrganizativa.component'
+import { CreacionAlmacen } from '../../pages/CreacionAlmacenCEDIS/creacionAlmacen.component'
+
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 //angular material
@@ -32,8 +35,11 @@ import { MaterialModule } from 'app/material-module';
     ConsultasF2,
     AdminUsuarios,
     Salir,
-    TipoCambio
-  ]
+    TipoCambio,
+    JerarquiaOrganizativa,
+    CreacionAlmacen
+  ],
+  providers: [DatePipe]
 })
 
 export class AdminLayoutModule { }
