@@ -9,6 +9,9 @@ import { Salir } from '../../pages/salir/salir.component';
 import { TipoCambio } from '../../pages/tipoCambio/tipoCAmbio.component';
 import { JerarquiaOrganizativa } from '../../pages/jerarquiaOrganizativa/jerarquiaOrganizativa.component';
 import { CreacionAlmacen } from '../../pages/CreacionAlmacenCEDIS/creacionAlmacen.component'
+import { Proveedores } from '../../pages/proveedores/proveedores.component'
+import { Impuestos } from '../../pages/impuestos/impuestos.component'
+import { CreacionTienda } from '../../pages/creacionTienda/creacionTienda.component'
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'consultasDM', component: ConsultasDM },
@@ -17,5 +20,8 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'salir', component: Salir },
     { path: 'tipoCambio', component: TipoCambio },
     { path: 'jerarquiaOrganizativa', component: JerarquiaOrganizativa },
-    { path: 'creacionAlmacen', component: CreacionAlmacen }
+    { path: 'creacionAlmacen', component: CreacionAlmacen },
+    { path: 'proveedores', component: Proveedores },
+    { path: 'impuestos', component: Impuestos },
+    { path: 'creacionTienda', component: CreacionTienda }
 ];

@@ -15,6 +15,10 @@ import { Salir } from '../../pages/salir/salir.component';
 import { TipoCambio } from '../../pages/tipoCambio/tipoCAmbio.component';
 import { JerarquiaOrganizativa } from '../../pages/jerarquiaOrganizativa/jerarquiaOrganizativa.component'
 import { CreacionAlmacen } from '../../pages/CreacionAlmacenCEDIS/creacionAlmacen.component'
+import { Proveedores } from '../../pages/proveedores/proveedores.component'
+import { Impuestos } from '../../pages/impuestos/impuestos.component'
+import { CreacionTienda } from '../../pages/creacionTienda/creacionTienda.component'
+
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -37,7 +41,10 @@ import { MaterialModule } from 'app/material-module';
     Salir,
     TipoCambio,
     JerarquiaOrganizativa,
-    CreacionAlmacen
+    CreacionAlmacen,
+    Proveedores,
+    Impuestos,
+    CreacionTienda
   ],
   providers: [DatePipe]
 })

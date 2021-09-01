@@ -1,0 +1,163 @@
+<nav class="navbar navbar-expand-lg navbar-absolute fixed-top navbar-transparent">
+    <div class="container-fluid">
+        <div class="navbar-wrapper">
+            <div class="navbar-toggle">
+            </div>
+            <a class="navbar-brand" href="javascript:void(0)">Creacion Tienda</a>
+        </div>
+    </div>
+</nav>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title"> Consultas DM: Creacion Tienda</h4>
+            </div>
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-3 px-1">
+                        <div class="form-group">
+                            <label>Fecha desde</label>
+                            <input type="date" class="form-control" #fechaInicio placeholder="dd/mm/yyyy">
+                        </div>
+                    </div>
+                    <div class="col-md-4 pl-1">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Hasta</label>
+                            <input type="date" class="form-control" #fechaFin placeholder="dd/mm/yyyy">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 px-1">
+                        <div class="update ml-auto mr-auto">
+                            <button (click)="buscar(fechaInicio.value, fechaFin.value)"
+                                class="btn btn-primary btn-round">Ejecutar</button>
+                        </div>
+                    </div>
+                    <div class="col-md-2 px-1">
+                        <div class="update ml-auto mr-auto">
+                            <button (click)="createPdf()" class="btn btn-primary btn-round">Imprimir</button>
+                        </div>
+                    </div>
+                    <div class="col-md-2 px-1">
+                        <div class="update ml-auto mr-auto">
+                            <button class="btn btn-primary btn-round" routerLink="/consultasDM">Salir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br><br>
+            <p class="card-title">STORE</p>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <div class="mat-elevation-z8">
+                        <table mat-table [dataSource]="dataResponseVC" matSort class="mat-elevation-z8">
+
+                            <!-- Position Column -->
+                            <ng-container matColumnDef="id">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                                <td mat-cell *matCellDef="let element">{{element.id}}</td>
+                            </ng-container>
+
+                            <!-- Position Column -->
+                            <ng-container matColumnDef="name">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Name </th>
+                                <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                            </ng-container>
+
+                            <!-- Name Column -->
+                            <ng-container matColumnDef="add1">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> add1 </th>
+                                <td mat-cell *matCellDef="let element"> {{element.add1}} </td>
+                            </ng-container>
+
+                            <!-- Weight Column -->
+                            <ng-container matColumnDef="add2">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> add2 </th>
+                                <td mat-cell *matCellDef="let element"> {{element.add2}} </td>
+                            </ng-container>
+
+                            <!-- Symbol Column -->
+                            <ng-container matColumnDef="city">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Ciudad </th>
+                                <td mat-cell *matCellDef="let element"> {{element.city}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="state">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> State </th>
+                                <td mat-cell *matCellDef="let element"> {{element.state}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="fechacreacion">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha Creacion </th>
+                                <td mat-cell *matCellDef="let element"> {{element.fechacreacion}} </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumnsS"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumnsS;"></tr>
+                        </table>
+
+                        <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
+                    </div>
+                </div>
+            </div>
+            <br><br>
+            <p class="card-title">STORE HIERARCHY</p>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <div class="mat-elevation-z8">
+                        <table mat-table [dataSource]="dataResponseVR" matSort class="mat-elevation-z8">
+
+                            <!-- Position Column -->
+                            <ng-container matColumnDef="id">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                                <td mat-cell *matCellDef="let element">{{element.id}}</td>
+                            </ng-container>
+
+                            <!-- Position Column -->
+                            <ng-container matColumnDef="company">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Company </th>
+                                <td mat-cell *matCellDef="let element"> {{element.company}} </td>
+                            </ng-container>
+
+                            <!-- Weight Column -->
+                            <ng-container matColumnDef="chain">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Chain </th>
+                                <td mat-cell *matCellDef="let element"> {{element.chain}} </td>
+                            </ng-container>
+
+                            <!-- Weight Column -->
+                            <ng-container matColumnDef="area">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Area </th>
+                                <td mat-cell *matCellDef="let element"> {{element.area}} </td>
+                            </ng-container>
+
+                            <!-- Symbol Column -->
+                            <ng-container matColumnDef="region">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Region </th>
+                                <td mat-cell *matCellDef="let element"> {{element.region}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="district">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> District </th>
+                                <td mat-cell *matCellDef="let element"> {{element.district}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="fechacreacion">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha activación </th>
+                                <td mat-cell *matCellDef="let element"> {{element.fechacreacion}} </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumnsSH"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumnsSH;"></tr>
+                        </table>
+
+                        <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

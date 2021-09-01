@@ -1,14 +1,9 @@
 import { Component, OnInit, NgZone, ViewChild } from '@angular/core';
-import { Router } from "@angular/router";
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClient } from "@angular/common/http";
-import { Observable } from "rxjs";
-import { environment } from "environments/environment"
 import { DatePipe } from '@angular/common'
-
 
 import jsPDF from 'jspdf'
 import 'jspdf-autotable'
@@ -20,8 +15,8 @@ import 'jspdf-autotable'
 })
 
 export class TipoCambio implements OnInit {
-  displayedColumns: string[] = ['basedatos', 'tabla', 'mensajeerror', 'tipocambio', 'moneda', 'fechaactivacion'];
-  head = [['baseDatos', 'tabla', 'mensajeError', 'tipoCambio', 'moneda', 'fechaActivacion']]
+  displayedColumns: string[] = ['basedatos', 'tabla', 'mensajeerror', 'exchangetype', 'effectivedate', 'tipocambio', 'moneda', 'fechaactivacion'];
+  head = [['Dase de Datos', 'Tabla', 'Mensaje de Error', 'Exchange Type', 'Effective Date', 'Tipo Cambio', 'moneda', 'Fecha Activacion']]
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
@@ -32,6 +27,7 @@ export class TipoCambio implements OnInit {
   dataResponseTableDCTSTG = null;
 
   constructor(private http: HttpClient, public datepipe: DatePipe) { }
+
   ngOnInit(): void {
   }
 
@@ -73,14 +69,14 @@ export class TipoCambio implements OnInit {
     var rows = [];
 
     this.dataResponseTableCRSTG.forEach(element => {
-      var temp = [element.basedatos, element.tabla, element.mensajeerror, element.tipocambio, element.moneda, element.fechaactivacion];
+      var temp = [element.basedatos, element.tabla, element.mensajeerror, element.effectivedate, element.exchangetype, element.tipocambio, element.moneda, element.fechaactivacion];
       rows.push(temp);
     })
 
-    var doc1 = new jsPDF();
+    var doc1 = new jsPDF({ orientation: "landscape" });
 
     doc1.setFontSize(18);
-    doc1.text('Consultas de Alertas: Tipo de Cambio', 11, 8);
+    doc1.text('Consultas DM: Tipo de Cambio CURRENCY_RATES', 11, 8);
     doc1.setFontSize(11);
     doc1.setTextColor(100);
 
@@ -99,7 +95,7 @@ export class TipoCambio implements OnInit {
     doc1.output('dataurlnewwindow')
 
     // below line for Download PDF document  
-    doc1.save('Consultas_de_Alertas_Tipo_de_Cambio_CURRENCY_RATES_STG.pdf');
+    doc1.save('Consultas_DM_Tipo_de_Cambio_CURRENCY_RATES_STG.pdf');
   }
 
   createPdFDCTSTG() {
@@ -107,14 +103,14 @@ export class TipoCambio implements OnInit {
     var rows = [];
 
     this.dataResponseTableDCTSTG.forEach(element => {
-      var temp = [element.basedatos, element.tabla, element.mensajeerror, element.tipocambio, element.moneda, element.fechaactivacion];
+      var temp = [element.basedatos, element.tabla, element.mensajeerror, element.effectivedate, element.exchangetype, element.tipocambio, element.moneda, element.fechaactivacion];
       rows.push(temp);
     })
 
     var doc2 = new jsPDF();
 
     doc2.setFontSize(18);
-    doc2.text('Consultas de Alertas: Tipo de Cambio', 11, 8);
+    doc2.text('Consultas DM: Tipo de Cambio DAILY_CONVERTION_TYPES_STG', 11, 8);
     doc2.setFontSize(11);
     doc2.setTextColor(100);
 
@@ -131,6 +127,6 @@ export class TipoCambio implements OnInit {
     doc2.output('dataurlnewwindow')
 
     // below line for Download PDF document  
-    doc2.save('Consultas_de_Alertas_Tipo_de_Cambio_DAILY_CONVERTION_TYPES_STG.pdf');
+    doc2.save('Consultas_DM_Tipo_de_Cambio_DAILY_CONVERTION_TYPES_STG.pdf');
   }
 }

@@ -1,12 +1,8 @@
 import { Component, OnInit, NgZone, ViewChild } from '@angular/core';
-import { Router } from "@angular/router";
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClient } from "@angular/common/http";
-import { Observable } from "rxjs";
-import { environment } from "environments/environment"
 import { DatePipe } from '@angular/common'
 
 import jsPDF from 'jspdf'
@@ -116,7 +112,7 @@ export class JerarquiaOrganizativa implements OnInit {
     var doc1 = new jsPDF();
 
     doc1.setFontSize(18);
-    doc1.text('Consultas de Alertas: Tipo de Cambio', 11, 8);
+    doc1.text('Consultas DM: Tipo de Cambio AREA_STG', 11, 8);
     doc1.setFontSize(11);
     doc1.setTextColor(100);
 
@@ -133,7 +129,7 @@ export class JerarquiaOrganizativa implements OnInit {
     doc1.output('dataurlnewwindow')
 
     // below line for Download PDF document  
-    doc1.save('Consultas_de_Alertas_Jerarquia_Organizativa_AREA_STG.pdf');
+    doc1.save('Consultas_DM_Jerarquia_Organizativa_AREA_STG.pdf');
   }
 
   createPdfCSTG() {
@@ -148,7 +144,7 @@ export class JerarquiaOrganizativa implements OnInit {
     var doc1 = new jsPDF();
 
     doc1.setFontSize(18);
-    doc1.text('Consultas de Alertas: Tipo de Cambio', 11, 8);
+    doc1.text('Consultas DM: Tipo de Cambio CHAIN_STG', 11, 8);
     doc1.setFontSize(11);
     doc1.setTextColor(100);
 
@@ -165,7 +161,7 @@ export class JerarquiaOrganizativa implements OnInit {
     doc1.output('dataurlnewwindow')
 
     // below line for Download PDF document  
-    doc1.save('Consultas_de_Alertas_Jerarquia_Organizativa_CHAIN_STG.pdf');
+    doc1.save('Consultas_DM_Jerarquia_Organizativa_CHAIN_STG.pdf');
   }
 
   createPdfCHSTG() {
@@ -180,7 +176,7 @@ export class JerarquiaOrganizativa implements OnInit {
     var doc1 = new jsPDF();
 
     doc1.setFontSize(18);
-    doc1.text('Consultas de Alertas: Tipo de Cambio', 11, 8);
+    doc1.text('Consultas DM: Tipo de Cambio COMPHEAD_STG', 11, 8);
     doc1.setFontSize(11);
     doc1.setTextColor(100);
 
@@ -197,7 +193,7 @@ export class JerarquiaOrganizativa implements OnInit {
     doc1.output('dataurlnewwindow')
 
     // below line for Download PDF document  
-    doc1.save('Consultas_de_Alertas_Jerarquia_Organizativa_COMPHEAD_STG.pdf');
+    doc1.save('Consultas_DM_Jerarquia_Organizativa_COMPHEAD_STG.pdf');
   }
 
   createPdfDSTG() {
@@ -212,7 +208,7 @@ export class JerarquiaOrganizativa implements OnInit {
     var doc1 = new jsPDF();
 
     doc1.setFontSize(18);
-    doc1.text('Consultas de Alertas: Tipo de Cambio', 11, 8);
+    doc1.text('Consultas DM: Tipo de Cambio DISTRICT_STG', 11, 8);
     doc1.setFontSize(11);
     doc1.setTextColor(100);
 
@@ -229,7 +225,7 @@ export class JerarquiaOrganizativa implements OnInit {
     doc1.output('dataurlnewwindow')
 
     // below line for Download PDF document  
-    doc1.save('Consultas_de_Alertas_Jerarquia_Organizativa_DISTRICT_STG.pdf');
+    doc1.save('Consultas_DM_Jerarquia_Organizativa_DISTRICT_STG.pdf');
   }
 
   createPdfRSTG() {
@@ -244,7 +240,7 @@ export class JerarquiaOrganizativa implements OnInit {
     var doc1 = new jsPDF();
 
     doc1.setFontSize(18);
-    doc1.text('Consultas de Alertas: Tipo de Cambio', 11, 8);
+    doc1.text('Consultas DM: Tipo de Cambio REGION_STG', 11, 8);
     doc1.setFontSize(11);
     doc1.setTextColor(100);
 
@@ -261,6 +257,6 @@ export class JerarquiaOrganizativa implements OnInit {
     doc1.output('dataurlnewwindow')
 
     // below line for Download PDF document  
-    doc1.save('Consultas_de_Alertas_Jerarquia_Organizativa_REGION_STG.pdf');
+    doc1.save('Consultas_DM_Jerarquia_Organizativa_REGION_STG.pdf');
   }
 }

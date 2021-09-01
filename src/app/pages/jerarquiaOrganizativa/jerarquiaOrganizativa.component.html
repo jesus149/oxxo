@@ -1,8 +1,18 @@
+<nav class="navbar navbar-expand-lg navbar-absolute fixed-top navbar-transparent">
+    <div class="container-fluid">
+        <div class="navbar-wrapper">
+            <div class="navbar-toggle">
+            </div>
+            <a class="navbar-brand" href="javascript:void(0)">Jerarquia Organizativa</a>
+        </div>
+    </div>
+</nav>
+
 <div class="row">
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title"> Consultas de Alertas: Jerarquia Organizativa</h4>
+                <h4 class="card-title"> Consultas DM: Jerarquia Organizativa</h4>
             </div>
             <div class="card-header">
                 <div class="row">
@@ -20,18 +30,18 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-1 px-1">
+                    <div class="col-md-2 px-1">
                         <div class="update ml-auto mr-auto">
                             <button (click)="buscar(fechaInicio.value, fechaFin.value)"
                                 class="btn btn-primary btn-round">Ejecutar</button>
                         </div>
                     </div>
-                    <div class="col-md-1 px-1">
+                    <div class="col-md-2 px-1">
                         <div class="update ml-auto mr-auto">
                             <button (click)="createPdf()" class="btn btn-primary btn-round">Imprimir</button>
                         </div>
                     </div>
-                    <div class="col-md-1 px-1">
+                    <div class="col-md-2 px-1">
                         <div class="update ml-auto mr-auto">
                             <button class="btn btn-primary btn-round" routerLink="/consultasDM">Salir</button>
                         </div>
@@ -213,8 +223,8 @@
                 </div>
             </div>
             <br><br>
-            <p class="card-title" style="display: none;">DISTRICT</p>
-            <div class="card-body" style="display: none;">
+            <p class="card-title">DISTRICT</p>
+            <div class="card-body">
                 <div class="table-responsive">
                     <div class="mat-elevation-z8">
                         <table mat-table [dataSource]="dataResponseDSTG" matSort class="mat-elevation-z8">
