@@ -1,12 +1,9 @@
-import { Component, OnInit, NgZone, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClient } from "@angular/common/http";
-import { Observable } from "rxjs";
-import { environment } from "environments/environment"
 import { DatePipe } from '@angular/common'
 import { NgxSpinnerService } from 'ngx-spinner';
 

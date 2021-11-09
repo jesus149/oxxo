@@ -1,15 +1,10 @@
-import { Component, OnInit, NgZone, ViewChild } from "@angular/core";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatTableDataSource } from "@angular/material/table";
-import { MatSort } from "@angular/material/sort";
+import { Component, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { DatePipe } from "@angular/common";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { NgxSpinnerService } from 'ngx-spinner';
 
-import jsPDF from "jspdf";
 import "jspdf-autotable";
 
 @Component({

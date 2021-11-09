@@ -9,7 +9,6 @@ import { NgxSpinnerService } from 'ngx-spinner';
 
 import jsPDF from 'jspdf'
 import 'jspdf-autotable'
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'creacionTienda-cmp',
