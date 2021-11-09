@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --base-href /oxxo/ --deploy-url /oxxo/",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
@@ -30,6 +30,7 @@
     "faker": "^5.5.3",
     "jspdf": "^2.3.1",
     "jspdf-autotable": "^3.5.15",
+    "ngx-spinner": "^10.0.1",
     "rxjs": "6.6.3",
     "tslib": "2.0.2",
     "zone.js": "0.11.1"

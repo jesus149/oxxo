@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { DatePipe } from '@angular/common'
+import { DatePipe } from '@angular/common';
+import { NgxSpinnerModule } from "ngx-spinner";
 
 import { AdminLayoutRoutes } from './admin-layout.routing';
 
@@ -18,7 +19,12 @@ import { CreacionAlmacen } from '../../pages/CreacionAlmacenCEDIS/creacionAlmace
 import { Proveedores } from '../../pages/proveedores/proveedores.component'
 import { Impuestos } from '../../pages/impuestos/impuestos.component'
 import { CreacionTienda } from '../../pages/creacionTienda/creacionTienda.component'
-
+import { CreacionArticulosServicio } from '../../pages/creacionArticulosServicio/creacionArticulosServicio.component'
+import { CreacionArticulosNormales } from '../../pages/creacionArticulosNormales/creacionArticulosNormales.component'
+import { MantenimientoArticulos } from '../../pages/mantenimientoArticulos/mantenimientoArticulos.component'
+import { CreacionMantenimientoUDAs } from '../../pages/creacionMantenimientoUDAs/creacionMantenimientoUDAs.component'
+import { GestionAlmacenPMO } from '../../pages/gestionAlmacenPMO/gestionAlmacenPMO.component'
+import { GestionAlmacenRecibo } from '../../pages/gestionAlmacenRecibo/gestionAlmacenRecibo.component'
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -32,7 +38,8 @@ import { MaterialModule } from 'app/material-module';
     RouterModule.forChild(AdminLayoutRoutes),
     FormsModule,
     NgbModule,
-    MaterialModule
+    MaterialModule,
+    NgxSpinnerModule
   ],
   declarations: [
     ConsultasDM,
@@ -44,7 +51,13 @@ import { MaterialModule } from 'app/material-module';
     CreacionAlmacen,
     Proveedores,
     Impuestos,
-    CreacionTienda
+    CreacionTienda,
+    CreacionArticulosServicio,
+    CreacionArticulosNormales,
+    MantenimientoArticulos,
+    CreacionMantenimientoUDAs,
+    GestionAlmacenPMO,
+    GestionAlmacenRecibo
   ],
   providers: [DatePipe]
 })

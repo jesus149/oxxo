@@ -4,6 +4,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { HttpClient } from "@angular/common/http";
 import { DatePipe } from '@angular/common'
+import { ActivatedRoute, Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 import jsPDF from 'jspdf'
 import 'jspdf-autotable'
@@ -11,25 +13,53 @@ import 'jspdf-autotable'
 @Component({
   selector: 'tipoCambio-cmp',
   templateUrl: 'tipoCambio.component.html',
-  styleUrls: ['./tipoCambio.component.css']
+  styleUrls: ['tipoCambio.component.css']
 })
 
 export class TipoCambio implements OnInit {
-  displayedColumns: string[] = ['basedatos', 'tabla', 'mensajeerror', 'exchangetype', 'effectivedate', 'tipocambio', 'moneda', 'fechaactivacion'];
-  head = [['Dase de Datos', 'Tabla', 'Mensaje de Error', 'Exchange Type', 'Effective Date', 'Tipo Cambio', 'moneda', 'Fecha Activacion']]
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  displayedColumns: string[] = ['mensajeerror', 'basedatos', 'tabla', 'exchangetype', 'effectivedate', 'tipocambio', 'moneda', 'fechaactivacion'];
+  head = [['Mensaje de Error', 'Dase de Datos', 'Tabla', 'exchange_type', 'effective_date', 'Tipo Cambio', 'Moneda', 'Fecha Ejecución']]
 
+  @ViewChild('PaginatorCRSTG', { static: true }) paginatorCRSTG: MatPaginator;
+  @ViewChild('SortCRSTG', { static: true }) sortCRSTG: MatSort
   dataResponseCRSTG = null;
   dataResponseTableCRSTG = null;
+  alertSuccessCRSTG = false;
+  alertWarningCRSTG = false;
+  showComponentsCRSTG = false;
+  alertElementsCRSTG = false;
+  numElementsCRSTG: any;
+  showSpinnerCRSTG = false;
+  hideButtonMostarCRSTG = true;
+  responseCRSTG: any;
 
-  dataResponsDCTSTG = null;
-  dataResponseTableDCTSTG = null;
+  appId: any;
+  encrypt: any;
 
-  constructor(private http: HttpClient, public datepipe: DatePipe) { }
+  constructor(
+    private route: ActivatedRoute,
+    private http: HttpClient,
+    private router: Router,
+    public datepipe: DatePipe,
+    private spinner: NgxSpinnerService
+) {
+}
 
-  ngOnInit(): void {
-  }
+ngOnInit(): void {
+    this.spinner.show();
+    this.appId = localStorage.getItem('appId');
+    this.encrypt = localStorage.getItem('encrypt');
+
+    this.http.get<any>('https://fcportaldes.femcom.net:8443//userapi/api/user/keys?appId=' + this.appId + '&encrypt=' + this.encrypt + '').subscribe(response => {
+        console.log("todo ok")
+        this.spinner.hide();
+    }, err => {
+        console.log("Error: ", err);
+        //const dialogRef = this.dialog.open(DialogContentExampleDialog);
+        this.spinner.hide();
+        this.router.navigate(['/login']);
+    });
+}
 
   createPdf() {
 
@@ -41,27 +71,39 @@ export class TipoCambio implements OnInit {
 
   buscar(fechainicio: string, fechaFin: string) {
 
-    if (fechainicio === "" || fechaFin === "") {
-      alert("Se requieren ambas fechas");
-    } else {
-      let fInicio = this.datepipe.transform(fechainicio, 'yyyy-MM-dd');
-      let fFinal = this.datepipe.transform(fechaFin, 'yyyy-MM-dd');
+    /* if (fechainicio === "" || fechaFin === "") {
+       alert("Se requieren ambas fechas");
+     } else {*/
+    let fInicio = this.datepipe.transform(fechainicio, 'yyyy-MM-dd');
+    let fFinal = this.datepipe.transform(fechaFin, 'yyyy-MM-dd');
 
-      this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr001/currency_rates_stg/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
-        console.log(response);
-        this.dataResponseCRSTG = new MatTableDataSource<any>(response['items'])
-        this.dataResponseCRSTG.paginator = this.paginator;
+    this.showSpinnerCRSTG = true;
+
+    this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr001/currency_rates_stg/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
+      console.log(response);
+      if (response['count'] > 0) {
+        this.responseCRSTG = response;
         this.dataResponseTableCRSTG = response['items'];
-      });
+        this.numElementsCRSTG = response['count'];
+        this.alertElementsCRSTG = true;
+      } else {
+        this.alertSuccessCRSTG = true;
+      }
+      this.showSpinnerCRSTG = false;
+    }, err => {
+      this.alertWarningCRSTG = true;
+      this.showSpinnerCRSTG = false;
+    });
 
-      this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr001/currency_rates_stg/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
-        console.log(response);
-        this.dataResponsDCTSTG = new MatTableDataSource<any>(response['items'])
-        this.dataResponsDCTSTG.paginator = this.paginator;
-        this.dataResponseTableDCTSTG = response['items'];
-      });
+    //}
+  }
 
-    }
+  showTableCRSTG() {
+    this.dataResponseCRSTG = new MatTableDataSource<any>(this.responseCRSTG['items'])
+    this.dataResponseCRSTG.paginator = this.paginatorCRSTG;
+    this.dataResponseCRSTG.sort = this.sortCRSTG;
+    this.showComponentsCRSTG = true;
+    this.hideButtonMostarCRSTG = false;
   }
 
   createPdfCRSTG() {
@@ -69,14 +111,14 @@ export class TipoCambio implements OnInit {
     var rows = [];
 
     this.dataResponseTableCRSTG.forEach(element => {
-      var temp = [element.basedatos, element.tabla, element.mensajeerror, element.effectivedate, element.exchangetype, element.tipocambio, element.moneda, element.fechaactivacion];
+      var temp = [element.mensajeerror, element.basedatos, element.tabla, element.effectivedate?.substr(0, 10), element.exchangetype, element.tipocambio, element.moneda, element.fechaactivacion?.substr(0, 10)];
       rows.push(temp);
     })
 
     var doc1 = new jsPDF({ orientation: "landscape" });
 
     doc1.setFontSize(18);
-    doc1.text('Consultas DM: Tipo de Cambio CURRENCY_RATES', 11, 8);
+    doc1.text('Consultas DM: Tipo de Cambio', 11, 8);
     doc1.setFontSize(11);
     doc1.setTextColor(100);
 
@@ -95,38 +137,6 @@ export class TipoCambio implements OnInit {
     doc1.output('dataurlnewwindow')
 
     // below line for Download PDF document  
-    doc1.save('Consultas_DM_Tipo_de_Cambio_CURRENCY_RATES_STG.pdf');
-  }
-
-  createPdFDCTSTG() {
-
-    var rows = [];
-
-    this.dataResponseTableDCTSTG.forEach(element => {
-      var temp = [element.basedatos, element.tabla, element.mensajeerror, element.effectivedate, element.exchangetype, element.tipocambio, element.moneda, element.fechaactivacion];
-      rows.push(temp);
-    })
-
-    var doc2 = new jsPDF();
-
-    doc2.setFontSize(18);
-    doc2.text('Consultas DM: Tipo de Cambio DAILY_CONVERTION_TYPES_STG', 11, 8);
-    doc2.setFontSize(11);
-    doc2.setTextColor(100);
-
-
-    (doc2 as any).autoTable({
-      head: this.head,
-      body: rows,
-      theme: 'striped',
-      didDrawCell: data => {
-      }
-    })
-
-    // below line for Open PDF document in new tab
-    doc2.output('dataurlnewwindow')
-
-    // below line for Download PDF document  
-    doc2.save('Consultas_DM_Tipo_de_Cambio_DAILY_CONVERTION_TYPES_STG.pdf');
+    doc1.save('Consultas_DM_Tipo_de_Cambio.pdf');
   }
 }

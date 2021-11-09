@@ -1,18 +1,8 @@
-<nav class="navbar navbar-expand-lg navbar-absolute fixed-top navbar-transparent">
-    <div class="container-fluid">
-        <div class="navbar-wrapper">
-            <div class="navbar-toggle">
-            </div>
-            <a class="navbar-brand" href="javascript:void(0)">Tipo de Cambio</a>
-        </div>
-    </div>
-</nav>
-
 <div class="row">
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title"> Consultas DM: Tipo de Cambio</h4>
+                <h2 class="card-title"> Consultas DM: Tipo de Cambio</h2>
             </div>
             <div class="card-header">
                 <div class="row">
@@ -30,30 +20,55 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-2 px-1">
+                    <div class="px-1">
                         <div class="update ml-auto mr-auto">
                             <button (click)="buscar(fechaInicio.value, fechaFin.value)"
-                                class="btn btn-primary btn-round">Ejecutar</button>
+                                class="btn btn-primary-one btn-round">Ejecutar</button>
                         </div>
                     </div>
-                    <div class="col-md-2 px-1">
+                    <div class="px-1">
                         <div class="update ml-auto mr-auto">
-                            <button (click)="createPdf()" class="btn btn-primary btn-round">Imprimir</button>
-                        </div>
-                    </div>
-                    <div class="col-md-2 px-1">
-                        <div class="update ml-auto mr-auto">
-                            <button class="btn btn-primary btn-round" routerLink="/consultasDM">Salir</button>
+                            <button class="btn btn-primary-one btn-round" routerLink="/consultasDM">Salir</button>
                         </div>
                     </div>
                 </div>
             </div>
-            <br><br>
-            <p class="card-title">CURRENCY_RATES</p>
+            <hr>
+            <div class="card-header">
+                <h2 class="card-title">Tipo de Cambio</h2>
+            </div>
+            <div *ngIf='showSpinnerCRSTG' class="card-header">
+                <mat-spinner></mat-spinner>
+            </div>
+            <div *ngIf='showComponentsCRSTG' class="col-md-1 px-1">
+                <div class="update ml-auto mr-auto">
+                    <button (click)="createPdfCRSTG()" class="btn btn-primary-two btn-round">Imprimir</button>
+                </div>
+            </div>
+
+            <div *ngIf='alertSuccessCRSTG' class="alert alert-success" role="alert">
+                Los datos se encuentran sincronizados en el día de búsqueda !
+            </div>
+            <div *ngIf='alertElementsCRSTG' class="alert alert-success" role="alert">
+                Se han encontrado {{numElementsCRSTG}} registros !
+                <div *ngIf='hideButtonMostarCRSTG' class="update ml-auto mr-auto">
+                    <button (click)="showTableCRSTG()" class="btn btn-primary-two btn-round">Mostar</button>
+                </div>
+            </div>
+            <div *ngIf='alertWarningCRSTG' class="alert alert-warning" role="alert">
+                El servicio no se encuentra disponible !
+            </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <div class="mat-elevation-z8">
-                        <table mat-table [dataSource]="dataResponseCRSTG" matSort class="mat-elevation-z8">
+                        <table mat-table #SortCRSTG="matSort" [dataSource]="dataResponseCRSTG" matSort
+                            class="mat-elevation-z8">
+
+                            <!-- Name Column -->
+                            <ng-container matColumnDef="mensajeerror">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Mensaje Error </th>
+                                <td mat-cell *matCellDef="let element"> {{element.mensajeerror}} </td>
+                            </ng-container>
 
                             <!-- Position Column -->
                             <ng-container matColumnDef="basedatos">
@@ -68,21 +83,15 @@
                             </ng-container>
 
                             <!-- Name Column -->
-                            <ng-container matColumnDef="mensajeerror">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Mensaje Error </th>
-                                <td mat-cell *matCellDef="let element"> {{element.mensajeerror}} </td>
-                            </ng-container>
-
-                            <!-- Name Column -->
                             <ng-container matColumnDef="exchangetype">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Exchange type </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> exchange_type </th>
                                 <td mat-cell *matCellDef="let element"> {{element.exchangetype}} </td>
                             </ng-container>
 
                             <!-- Name Column -->
                             <ng-container matColumnDef="effectivedate">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Effective date </th>
-                                <td mat-cell *matCellDef="let element"> {{element.effectivedate}} </td>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> effective_date </th>
+                                <td mat-cell *matCellDef="let element"> {{element.effectivedate?.substr(0,10)}} </td>
                             </ng-container>
 
                             <!-- Weight Column -->
@@ -100,82 +109,20 @@
 
                             <!-- Symbol Column -->
                             <ng-container matColumnDef="fechaactivacion">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha activación </th>
-                                <td mat-cell *matCellDef="let element"> {{element.fechaactivacion}} </td>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha Ejecución </th>
+                                <td mat-cell *matCellDef="let element"> {{element.fechaactivacion?.substr(0,10)}} </td>
                             </ng-container>
 
                             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                         </table>
 
-                        <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
-                    </div>
-                </div>
-            </div>
-            <br><br>
-            <p class="card-title" style="display: none;">DAILY_CONVERTION_TYPES_STG</p>
-            <div class="card-body" style="display: none;">
-                <div class="table-responsive">
-                    <div class="mat-elevation-z8">
-                        <table mat-table [dataSource]="dataResponsDCTSTG" matSort class="mat-elevation-z8">
-
-                            <!-- Position Column -->
-                            <ng-container matColumnDef="basedatos">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Base de datos</th>
-                                <td mat-cell *matCellDef="let element">{{element.basedatos}}</td>
-                            </ng-container>
-
-                            <!-- Position Column -->
-                            <ng-container matColumnDef="tabla">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Tabla </th>
-                                <td mat-cell *matCellDef="let element"> {{element.tabla}} </td>
-                            </ng-container>
-
-                            <!-- Name Column -->
-                            <ng-container matColumnDef="mensajeerror">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Mensaje Error </th>
-                                <td mat-cell *matCellDef="let element"> {{element.mensajeerror}} </td>
-                            </ng-container>
-
-                            <!-- Name Column -->
-                            <ng-container matColumnDef="exchangetype">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Exchange type </th>
-                                <td mat-cell *matCellDef="let element"> {{element.exchangetype}} </td>
-                            </ng-container>
-
-                            <!-- Name Column -->
-                            <ng-container matColumnDef="effectivedate">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Effective date </th>
-                                <td mat-cell *matCellDef="let element"> {{element.effectiveDate}} </td>
-                            </ng-container>
-
-                            <!-- Weight Column -->
-                            <ng-container matColumnDef="tipocambio">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo cambio </th>
-                                <td mat-cell *matCellDef="let element"> {{element.tipocambio}} </td>
-                            </ng-container>
-
-
-                            <!-- Symbol Column -->
-                            <ng-container matColumnDef="moneda">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Moneda </th>
-                                <td mat-cell *matCellDef="let element"> {{element.moneda}} </td>
-                            </ng-container>
-
-                            <!-- Symbol Column -->
-                            <ng-container matColumnDef="fechaactivacion">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha activación </th>
-                                <td mat-cell *matCellDef="let element"> {{element.fechaactivacion}} </td>
-                            </ng-container>
-
-                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                        </table>
-
-                        <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
+                        <mat-paginator #PaginatorCRSTG="matPaginator" [pageSizeOptions]="[10, 25, 50]"
+                            showFirstLastButtons></mat-paginator>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<ngx-spinner></ngx-spinner>

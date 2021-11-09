@@ -4,6 +4,11 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { HttpClient } from "@angular/common/http";
 import { DatePipe } from '@angular/common'
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 import jsPDF from 'jspdf'
 import 'jspdf-autotable'
@@ -16,71 +21,181 @@ import 'jspdf-autotable'
 
 export class Impuestos implements OnInit {
 
-  displayedColumnsCV: string[] = ['vatcode', 'vatcodedesc', 'mensajeerror', 'id', 'fechacreacion'];
-  headVC = [['vatCode', 'vatCodedesc', 'mensajeError', 'id', 'fechaCreacion']]
+  displayedColumnsVC: string[] = ['mensajeerror', 'vatcode', 'vatcodedesc', 'id', 'fechacreacion'];
+  headVC = [['Mensaje', 'vat_code', 'vat_code_desc', 'id', 'create_date']]
 
-  displayedColumnsVR: string[] = ['vatregion', 'vatregionname', 'vattype', 'mensajeerror', 'id', 'fechacreacion'];
-  headVR = [['vatRegion', 'vatRegionName', 'vatType ', 'mensajeError', 'id', 'fechaCreacion']]
+  displayedColumnsVR: string[] = ['mensajeerror', 'vatregion', 'vatregionname', 'vattype', 'id', 'fechacreacion'];
+  headVR = [['Mensaje', 'vat_region', 'vat_region_name', 'vat_region_type ', 'id', 'create_date']]
 
-  displayedColumnsGS: string[] = ['numtienda', 'entidad', 'fechacreacion'];
-  headGS = [['numtienda', 'entidad', 'fechacreacion ']]
+  displayedColumnsGS: string[] = ['mensajeerror', 'numtienda', 'entidad', 'fechacreacion'];
+  headGS = [['Mensaje', 'store', 'state_geocode_id', 'create_date ']]
 
-  displayedColumnsGT: string[] = ['estado', 'entidad', 'tipoimpuesto', 'fechainiciovigencia', 'fechafinvigencia', 'jurisdiccion', 'fechacreacion'];
-  headGT = [['estado', 'entidad', 'tipoimpuesto', 'fechainiciovigencia', 'fechafinvigencia', 'jurisdiccion', 'fechacreacion']]
+  displayedColumnsGT: string[] = ['mensajeerror', 'estado', 'entidad', 'tipoimpuesto', 'fechainiciovigencia', 'fechafinvigencia', 'jurisdiccion', 'fechacreacion'];
+  headGT = [['Mensaje', 'geocode_level', 'state_geocode_id', 'tax_type_id', 'start_date', 'end_date', 'tax_jurisdiction_id', 'Fecha Ejecución']]
 
-  displayedColumnsPTC: string[] = ['item', 'tipoimpuesto', 'fechainiciovigencia', 'fechafinvigencia', 'jurisdiccion', 'fechacreacion'];
-  headPTC = [['item', 'tipoimpuesto', 'fechainiciovigencia', 'fechafinvigencia', 'jurisdiccion', 'fechacreacion']];
+  displayedColumnsPTC: string[] = ['mensajeerror', 'idcreacion', 'tipoimpuesto', 'jurisdiccion', 'fechacreacion'];
+  headPTC = [['Mensaje', 'create_id', 'tax_type_id', 'tax_jurisdiction_id', 'create_date']];
 
-  displayedColumnsTR: string[] = ['tipoimpuesto', 'fechainiciovigencia', 'fechafinvigencia', 'jurisdiccion', 'tasaimpuesto', 'fechacreacion'];
-  headTR = [['tipoimpuesto', 'fechainiciovigencia', 'fechafinvigencia', 'jurisdiccion', 'tasaimpuesto', 'fechacreacion']]
+  displayedColumnsTR: string[] = ['mensajeerror', 'tipoimpuesto', 'fechainiciovigencia', 'fechafinvigencia', 'jurisdiccion', 'tasaimpuesto', 'fechacreacion'];
+  headTR = [['Mensaje', 'tax_type_id', 'start_date', 'end_date', 'tax_jurisdiction_id_bk', 'tax_rate_bk', 'create_date']]
 
-  displayedColumnsVCR: string[] = ['codigoimpuesto', 'fechavigencia', 'tasaimpuesto', 'fechacreacion'];
-  headVCR = [['codigoimpuesto', 'fechavigencia', 'tasaimpuesto', 'fechacreacion']]
+  displayedColumnsVCR: string[] = ['mensajeerror', 'codigoimpuesto', 'fechavigencia', 'tasaimpuesto', 'fechacreacion'];
+  headVCR = [['Mensaje', 'vat_code', 'active_date', 'vat_rate', 'create_date']]
 
-  displayedColumnsVD: string[] = ['regionimpuestos', 'dept', 'tipoimpuesto', 'codigoimpuesto', 'fechacreacion'];
-  headVD = [['regionimpuestos', 'dept', 'tipoimpuesto', 'codigoimpuesto', 'fechacreacion']]
+  displayedColumnsVD: string[] = ['mensajeerror', 'regionimpuestos', 'dept', 'tipoimpuesto', 'codigoimpuesto', 'fechacreacion'];
+  headVD = [['Mensaje', 'vat_region', 'dept', 'vat_type', 'vat_code', 'create_date']]
 
-  displayedColumnsVI: string[] = ['item', 'region', 'fechavigencia', 'tipoimpuesto', 'codigoimpuesto', 'tasaimpuesto', 'fechacreacion'];
-  headVI = [['item', 'region', 'fechavigencia', 'tipoimpuesto', 'codigoimpuesto', 'tasaimpuesto', 'fechacreacion']]
+  displayedColumnsVI: string[] = ['mensajeerror', 'item', 'region', 'fechavigencia', 'tipoimpuesto', 'codigoimpuesto', 'tasaimpuesto', 'fechacreacion'];
+  headVI = [['Mensaje', 'item', 'vat_region', 'active_date', 'vat_type', 'vat_code', 'vat_rate', 'create_date']]
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
-
+  @ViewChild('PaginatorVC', { static: true }) paginatorVC: MatPaginator;
+  @ViewChild('SortVC', { static: true }) sortVC: MatSort
   dataResponseVC: MatTableDataSource<any>;
   dataResponseTableVC = null;
+  alertSuccessVC = false;
+  alertWarningVC = false;
+  showComponentsVC = false;
+  alertElementsVC = false;
+  numElementsVC: any;
+  showSpinnerVC = false;
+  hideButtonMostarVC = true;
+  responseVC: any;
 
-  dataResponseVR = null;
+  @ViewChild('PaginatorVR', { static: true }) paginatorVR: MatPaginator;
+  @ViewChild('SortVR', { static: true }) sortVR: MatSort
+  dataResponseVR: MatTableDataSource<any>;
   dataResponseTableVR = null;
+  alertSuccessVR = false;
+  alertWarningVR = false;
+  showComponentsVR = false;
+  alertElementsVR = false;
+  numElementsVR: any;
+  showSpinnerVR = false;
+  hideButtonMostarVR = true;
+  responseVR: any;
 
-  dataResponseGS = null;
+  @ViewChild('PaginatorGS', { static: true }) paginatorGS: MatPaginator;
+  @ViewChild('SortGS', { static: true }) sortGS: MatSort
+  dataResponseGS: MatTableDataSource<any>;
   dataResponseTableGS = null;
+  alertSuccessGS = false;
+  alertWarningGS = false;
+  showComponentsGS = false;
+  alertElementsGS = false;
+  numElementsGS: any;
+  showSpinnerGS = false;
+  hideButtonMostarGS = true;
+  responseGS: any;
 
-  dataResponseGT = null;
+  @ViewChild('PaginatorGT', { static: true }) paginatorGT: MatPaginator;
+  @ViewChild('SortGT', { static: true }) sortGT: MatSort
+  dataResponseGT: MatTableDataSource<any>;
   dataResponseTableGT = null;
+  alertSuccessGT = false;
+  alertWarningGT = false;
+  showComponentsGT = false;
+  alertElementsGT = false;
+  numElementsGT: any;
+  showSpinnerGT = false;
+  hideButtonMostarGT = true;
+  responseGT: any;
 
-  dataResponsePTC = null;
+  @ViewChild('PaginatorPTC', { static: true }) paginatorPTC: MatPaginator;
+  @ViewChild('SortPTC', { static: true }) sortPTC: MatSort
+  dataResponsePTC: MatTableDataSource<any>;
   dataResponseTablePTC = null;
+  alertSuccessPTC = false;
+  alertWarningPTC = false;
+  showComponentsPTC = false;
+  alertElementsPTC = false;
+  numElementsPTC: any;
+  showSpinnerPTC = false;
+  hideButtonMostarPTC = true;
+  responsePTC: any;
 
-  dataResponseTR = null;
+  @ViewChild('PaginatorTR', { static: true }) paginatorTR: MatPaginator;
+  @ViewChild('SortTR', { static: true }) sortTR: MatSort
+  dataResponseTR: MatTableDataSource<any>;
   dataResponseTableTR = null;
+  alertSuccessTR = false;
+  alertWarningTR = false;
+  showComponentsTR = false;
+  alertElementsTR = false;
+  numElementsTR: any;
+  showSpinnerTR = false;
+  hideButtonMostarTR = true;
+  responseTR: any;
 
-  dataResponseVCR = null;
+  @ViewChild('PaginatorVCR', { static: true }) paginatorVCR: MatPaginator;
+  @ViewChild('SortVCR', { static: true }) sortVCR: MatSort
+  dataResponseVCR: MatTableDataSource<any>;
   dataResponseTableVCR = null;
+  alertSuccessVCR = false;
+  alertWarningVCR = false;
+  showComponentsVCR = false;
+  alertElementsVCR = false;
+  numElementsVCR: any;
+  showSpinnerVCR = false;
+  hideButtonMostarVCR = true;
+  responseVCR: any;
 
-  dataResponseVD = null;
+  @ViewChild('PaginatorVD', { static: true }) paginatorVD: MatPaginator;
+  @ViewChild('SortVD', { static: true }) sortVD: MatSort
+  dataResponseVD: MatTableDataSource<any>;
   dataResponseTableVD = null;
+  alertSuccessVD = false;
+  alertWarningVD = false;
+  showComponentsVD = false;
+  alertElementsVD = false;
+  numElementsVD: any;
+  showSpinnerVD = false;
+  hideButtonMostarVD = true;
+  responseVD: any;
 
-  dataResponseVI = null;
+  @ViewChild('PaginatorVI', { static: true }) paginatorVI: MatPaginator;
+  @ViewChild('SortVI', { static: true }) sortVI: MatSort
+  dataResponseVI: MatTableDataSource<any>;
   dataResponseTableVI = null;
+  alertSuccessVI = false;
+  alertWarningVI = false;
+  showComponentsVI = false;
+  alertElementsVI = false;
+  numElementsVI: any;
+  showSpinnerVI = false;
+  hideButtonMostarVI = true;
+  responseVI: any;
 
-  constructor(private http: HttpClient, public datepipe: DatePipe) { }
+  appId: any;
+  encrypt: any;
 
-  ngOnInit(): void {
-  }
+  constructor(
+    private route: ActivatedRoute,
+    private http: HttpClient,
+    private router: Router,
+    public datepipe: DatePipe,
+    private spinner: NgxSpinnerService
+) {
+}
+
+ngOnInit(): void {
+    this.spinner.show();
+    this.appId = localStorage.getItem('appId');
+    this.encrypt = localStorage.getItem('encrypt');
+
+    this.http.get<any>('https://fcportaldes.femcom.net:8443//userapi/api/user/keys?appId=' + this.appId + '&encrypt=' + this.encrypt + '').subscribe(response => {
+        console.log("todo ok")
+        this.spinner.hide();
+    }, err => {
+        console.log("Error: ", err);
+        //const dialogRef = this.dialog.open(DialogContentExampleDialog);
+        this.spinner.hide();
+        this.router.navigate(['/login']);
+    });
+}
 
   createPdf() {
 
-    this.createPdfCV();
+    this.createPdfVC();
 
     this.createPdfVR();
 
@@ -108,92 +223,247 @@ export class Impuestos implements OnInit {
     let fInicio = this.datepipe.transform(fechainicio, 'yyyy-MM-dd');
     let fFinal = this.datepipe.transform(fechaFin, 'yyyy-MM-dd');
 
+    this.showSpinnerVC = true;
+    this.showSpinnerVR = true;
+    this.showSpinnerGS = true;
+    this.showSpinnerGT = true;
+    this.showSpinnerPTC = true;
+    this.showSpinnerTR = true;
+    this.showSpinnerVCR = true;
+    this.showSpinnerVD = true;
+    this.showSpinnerVI = true;
+
     this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr006/vat_codes/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
       console.log(response);
-      this.dataResponseVC = new MatTableDataSource(response['items'])
-      this.dataResponseVC.paginator = this.paginator;
-      this.dataResponseVC.sort = this.sort;
-      this.dataResponseTableVC = response['items'];
+      if (response['count'] > 0) {
+        this.responseVC = response;
+        this.dataResponseTableVC = response['items'];
+        this.numElementsVC = response['count'];
+        this.alertElementsVC = true;
+      } else {
+        this.alertSuccessVC = true;
+      }
+      this.showSpinnerVC = false;
+    }, err => {
+      this.alertWarningVC = true;
+      this.showSpinnerVC = false;
     });
 
     this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr006/vat_region/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
       console.log(response);
-      this.dataResponseVR = new MatTableDataSource(response['items'])
-      this.dataResponseVR.paginator = this.paginator;
-      this.dataResponseVR.sort = this.sort;
-      this.dataResponseTableVR = response['items'];
+      if (response['count'] > 0) {
+        this.responseVR = response;
+        this.dataResponseTableVR = response['items'];
+        this.numElementsVR = response['count'];
+        this.alertElementsVR = true;
+      } else {
+        this.alertSuccessVR = true;
+      }
+      this.showSpinnerVR = false;
+    }, err => {
+      this.alertWarningVR = true;
+      this.showSpinnerVR = false;
     });
 
     this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr006/geocode_store/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
       console.log(response);
-      this.dataResponseGS = new MatTableDataSource(response['items'])
-      this.dataResponseGS.paginator = this.paginator;
-      this.dataResponseTableGS = response['items'];
+      if (response['count'] > 0) {
+        this.responseGS = response;
+        this.dataResponseTableGS = response['items'];
+        this.numElementsGS = response['count'];
+        this.alertElementsGS = true;
+      } else {
+        this.alertSuccessGS = true;
+      }
+      this.showSpinnerGS = false;
+    }, err => {
+      this.alertWarningGS = true;
+      this.showSpinnerGS = false;
     });
 
     this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr006/geocode_txcde/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
       console.log(response);
-      this.dataResponseGT = new MatTableDataSource(response['items'])
-      this.dataResponseGT.paginator = this.paginator;
-      this.dataResponseGT.sort = this.sort;
-      this.dataResponseTableGT = response['items'];
+      if (response['count'] > 0) {
+        this.responseGT = response;
+        this.dataResponseTableGT = response['items'];
+        this.numElementsGT = response['count'];
+        this.alertElementsGT = true;
+      } else {
+        this.alertSuccessGT = true;
+      }
+      this.showSpinnerGT = false;
+    }, err => {
+      this.alertWarningGT = true;
+      this.showSpinnerGT = false;
     });
 
     this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr006/product_tax_code/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
       console.log(response);
-      this.dataResponsePTC = new MatTableDataSource(response['items'])
-      this.dataResponsePTC.paginator = this.paginator;
-      this.dataResponsePTC.sort = this.sort;
-      this.dataResponseTablePTC = response['items'];
+      if (response['count'] > 0) {
+        this.responsePTC = response;
+        this.dataResponseTablePTC = response['items'];
+        this.numElementsPTC = response['count'];
+        this.alertElementsPTC = true;
+      } else {
+        this.alertSuccessPTC = true;
+      }
+      this.showSpinnerPTC = false;
+    }, err => {
+      this.alertWarningPTC = true;
+      this.showSpinnerPTC = false;
     });
 
     this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr006/tax_rates/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
       console.log(response);
-      this.dataResponseTR = new MatTableDataSource(response['items'])
-      this.dataResponseTR.paginator = this.paginator;
-      this.dataResponseTR.sort = this.sort;
-      this.dataResponseTableTR = response['items'];
+      if (response['count'] > 0) {
+        this.responseTR = response;
+        this.dataResponseTableTR = response['items'];
+        this.numElementsTR = response['count'];
+        this.alertElementsTR = true;
+      } else {
+        this.alertSuccessTR = true;
+      }
+      this.showSpinnerTR = false;
+    }, err => {
+      this.alertWarningTR = true;
+      this.showSpinnerTR = false;
     });
 
     this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr006/vat_code_rates/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
       console.log(response);
-      this.dataResponseVCR = new MatTableDataSource(response['items'])
-      this.dataResponseVCR.paginator = this.paginator;
-      this.dataResponseVCR.sort = this.sort;
-      this.dataResponseTableVCR = response['items'];
+      if (response['count'] > 0) {
+        this.responseVCR = response;
+        this.dataResponseTableVCR = response['items'];
+        this.numElementsVCR = response['count'];
+        this.alertElementsVCR = true;
+      } else {
+        this.alertSuccessVCR = true;
+      }
+      this.showSpinnerVCR = false;
+    }, err => {
+      this.alertWarningVCR = true;
+      this.showSpinnerVCR = false;
     });
 
     this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr006/vat_deps/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
       console.log(response);
-      this.dataResponseVD = new MatTableDataSource(response['items'])
-      this.dataResponseVD.paginator = this.paginator;
-      this.dataResponseVD.sort = this.sort;
-      this.dataResponseTableVD = response['items'];
+      if (response['count'] > 0) {
+        this.responseVD = response;
+        this.dataResponseTableVD = response['items'];
+        this.numElementsVD = response['count'];
+        this.alertElementsVD = true;
+      } else {
+        this.alertSuccessVD = true;
+      }
+      this.showSpinnerVD = false;
+    }, err => {
+      this.alertWarningVD = true;
+      this.showSpinnerVD = false;
     });
 
     this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr006/vat_item/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
       console.log(response);
-      this.dataResponseVI = new MatTableDataSource(response['items'])
-      this.dataResponseVI.paginator = this.paginator;
-      this.dataResponseVI.sort = this.sort;
-      this.dataResponseTableVI = response['items'];
+      if (response['count'] > 0) {
+        this.responseVI = response;
+        this.dataResponseTableVI = response['items'];
+        this.numElementsVI = response['count'];
+        this.alertElementsVI = true;
+      } else {
+        this.alertSuccessVI = true;
+      }
+      this.showSpinnerVI = false;
+    }, err => {
+      this.alertWarningVI = true;
+      this.showSpinnerVI = false;
     });
     //}
   }
 
-  createPdfCV() {
+  showTableVC() {
+    this.dataResponseVC = new MatTableDataSource<any>(this.responseVC['items'])
+    this.dataResponseVC.paginator = this.paginatorVC;
+    this.dataResponseVC.sort = this.sortVC;
+    this.showComponentsVC = true;
+    this.hideButtonMostarVC = false;
+  }
+
+  showTableVR() {
+    this.dataResponseVR = new MatTableDataSource<any>(this.responseVR['items'])
+    this.dataResponseVR.paginator = this.paginatorVR;
+    this.dataResponseVR.sort = this.sortVR;
+    this.showComponentsVR = true;
+    this.hideButtonMostarVR = false;
+  }
+
+  showTableGS() {
+    this.dataResponseGS = new MatTableDataSource<any>(this.responseGS['items'])
+    this.dataResponseGS.paginator = this.paginatorGS;
+    this.dataResponseGS.sort = this.sortGS;
+    this.showComponentsGS = true;
+    this.hideButtonMostarGS = false;
+  }
+
+  showTableGT() {
+    this.dataResponseGT = new MatTableDataSource<any>(this.responseGT['items'])
+    this.dataResponseGT.paginator = this.paginatorGT;
+    this.dataResponseGT.sort = this.sortGT;
+    this.showComponentsGT = true;
+    this.hideButtonMostarGT = false;
+  }
+
+  showTablePTC() {
+    this.dataResponsePTC = new MatTableDataSource<any>(this.responsePTC['items'])
+    this.dataResponsePTC.paginator = this.paginatorPTC;
+    this.dataResponsePTC.sort = this.sortPTC;
+    this.showComponentsPTC = true;
+    this.hideButtonMostarPTC = false;
+  }
+
+  showTableTR() {
+    this.dataResponseTR = new MatTableDataSource<any>(this.responseTR['items'])
+    this.dataResponseTR.paginator = this.paginatorTR;
+    this.dataResponseTR.sort = this.sortTR;
+    this.showComponentsTR = true;
+    this.hideButtonMostarTR = false;
+  }
+
+  showTableVCR() {
+    this.dataResponseVCR = new MatTableDataSource<any>(this.responseVCR['items'])
+    this.dataResponseVCR.paginator = this.paginatorVCR;
+    this.dataResponseVCR.sort = this.sortVCR;
+    this.showComponentsVCR = true;
+    this.hideButtonMostarVCR = false;
+  }
+
+  showTableVD() {
+    this.dataResponseVD = new MatTableDataSource<any>(this.responseVD['items'])
+    this.dataResponseVD.paginator = this.paginatorVD;
+    this.dataResponseVD.sort = this.sortVD;
+    this.showComponentsVD = true;
+    this.hideButtonMostarVD = false;
+  }
+
+  showTableVI() {
+    this.dataResponseVI = new MatTableDataSource<any>(this.responseVI['items'])
+    this.dataResponseVI.paginator = this.paginatorVI;
+    this.dataResponseVI.sort = this.sortVI;
+    this.showComponentsVI = true;
+    this.hideButtonMostarVI = false;
+  }
+
+  createPdfVC() {
 
     var rows = [];
 
     this.dataResponseTableVC.forEach(element => {
-      var temp = [element.vatcode, element.vatcodedesc, element.mensajeerror, element.id, element.fechacreacion];
+      var temp = [element.mensajeerror, element.vatcode, element.vatcodedesc, element.id, element.fechacreacion?.substr(0, 10)];
       rows.push(temp);
     })
 
-    var doc1 = new jsPDF();
+    var doc1 = new jsPDF({ orientation: "landscape" });
 
     doc1.setFontSize(18);
-    doc1.text('Consultas DM: Tipo de Cambio VAT_CODES', 11, 8);
+    doc1.text('Consultas DM: VAT_CODES', 11, 8);
     doc1.setFontSize(11);
     doc1.setTextColor(100);
 
@@ -210,7 +480,7 @@ export class Impuestos implements OnInit {
     doc1.output('dataurlnewwindow')
 
     // below line for Download PDF document  
-    doc1.save('Consultas_DM_Impuestos_VAT_CODES.pdf');
+    doc1.save('Consultas_DM_VAT_CODES.pdf');
   }
 
   createPdfVR() {
@@ -218,14 +488,14 @@ export class Impuestos implements OnInit {
     var rows = [];
 
     this.dataResponseTableVR.forEach(element => {
-      var temp = [element.vatregion, element.vatregionname, element.vattype, element.mensajeerror, element.id, element.fechacreacion];
+      var temp = [element.mensajeerror, element.vatregion, element.vatregionname, element.vattype, element.id, element.fechacreacion?.substr(0, 10)];
       rows.push(temp);
     })
 
-    var doc1 = new jsPDF();
+    var doc1 = new jsPDF({ orientation: "landscape" });
 
     doc1.setFontSize(18);
-    doc1.text('Consultas DM: Tipo de Cambio VAT_REGIONS', 11, 8);
+    doc1.text('Consultas DM: VAT_REGIONS', 11, 8);
     doc1.setFontSize(11);
     doc1.setTextColor(100);
 
@@ -242,7 +512,7 @@ export class Impuestos implements OnInit {
     doc1.output('dataurlnewwindow')
 
     // below line for Download PDF document  
-    doc1.save('Consultas_DM_Impuestos_VAT_REGIONS.pdf');
+    doc1.save('Consultas_DM_VAT_REGIONS.pdf');
   }
 
   createPdfGS() {
@@ -250,14 +520,14 @@ export class Impuestos implements OnInit {
     var rows = [];
 
     this.dataResponseTableGS.forEach(element => {
-      var temp = [element.numtienda, element.entidad, element.fechacreacion];
+      var temp = [element.mensajeerror, element.numtienda, element.entidad, element.fechacreacion?.substr(0, 10)];
       rows.push(temp);
     })
 
-    var doc1 = new jsPDF();
+    var doc1 = new jsPDF({ orientation: "landscape" });
 
     doc1.setFontSize(18);
-    doc1.text('Consultas DM: Tipo de Cambio GEOCODE_STORE', 11, 8);
+    doc1.text('Consultas DM: GEOCODE_STORE', 11, 8);
     doc1.setFontSize(11);
     doc1.setTextColor(100);
 
@@ -274,7 +544,7 @@ export class Impuestos implements OnInit {
     doc1.output('dataurlnewwindow')
 
     // below line for Download PDF document  
-    doc1.save('Consultas_DM_Impuestos_GEOCODE_STORE.pdf');
+    doc1.save('Consultas_DM_GEOCODE_STORE.pdf');
   }
 
   createPdfGT() {
@@ -282,14 +552,14 @@ export class Impuestos implements OnInit {
     var rows = [];
 
     this.dataResponseTableGT.forEach(element => {
-      var temp = [element.estado, element.entidad, element.tipoimpuesto, element.fechainiciovigencia, element.fechafinvigencia, element.jurisdiccion, element.fechacreacion];
+      var temp = [element.mensajeerror, element.estado, element.entidad, element.tipoimpuesto, element.fechainiciovigencia?.substr(0, 10), element.fechafinvigencia?.substr(0, 10), element.jurisdiccion, element.fechacreacion?.substr(0, 10)];
       rows.push(temp);
     })
 
-    var doc1 = new jsPDF();
+    var doc1 = new jsPDF({ orientation: "landscape" });
 
     doc1.setFontSize(18);
-    doc1.text('Consultas DM: Tipo de Cambio GEOCODE_TXCDE', 11, 8);
+    doc1.text('Consultas DM: GEOCODE_TXCDE', 11, 8);
     doc1.setFontSize(11);
     doc1.setTextColor(100);
 
@@ -306,7 +576,7 @@ export class Impuestos implements OnInit {
     doc1.output('dataurlnewwindow')
 
     // below line for Download PDF document  
-    doc1.save('Consultas_DM_Impuestos_GEOCODE_TXCDE.pdf');
+    doc1.save('Consultas_DM_GEOCODE_TXCDE.pdf');
   }
 
   createPdfPTC() {
@@ -314,14 +584,14 @@ export class Impuestos implements OnInit {
     var rows = [];
 
     this.dataResponseTablePTC.forEach(element => {
-      var temp = [element.item, element.tipoimpuesto, element.fechainiciovigencia, element.fechafinvigencia, element.jurisdiccion, element.fechacreacion];
+      var temp = [element.mensajeerror, element.idcreacio, element.tipoimpuesto, element.jurisdiccion, element.fechacreacion?.substr(0, 10)];
       rows.push(temp);
     })
 
-    var doc1 = new jsPDF();
+    var doc1 = new jsPDF({ orientation: "landscape" });
 
     doc1.setFontSize(18);
-    doc1.text('Consultas DM: Tipo de Cambio PRODUCT_TAX_CODE', 11, 8);
+    doc1.text('Consultas DM: PRODUCT_TAX_CODE', 11, 8);
     doc1.setFontSize(11);
     doc1.setTextColor(100);
 
@@ -338,7 +608,7 @@ export class Impuestos implements OnInit {
     doc1.output('dataurlnewwindow')
 
     // below line for Download PDF document  
-    doc1.save('Consultas_DM_Impuestos_PRODUCT_TAX_CODE.pdf');
+    doc1.save('Consultas_DM_PRODUCT_TAX_CODE.pdf');
   }
 
   createPdfTR() {
@@ -346,14 +616,14 @@ export class Impuestos implements OnInit {
     var rows = [];
 
     this.dataResponseTableTR.forEach(element => {
-      var temp = [element.tipoimpuesto, element.fechainiciovigencia, element.fechafinvigencia, element.jurisdiccion, element.tasaimpuesto, element.fechacreacion];
+      var temp = [element.mensajeerror, element.tipoimpuesto, element.fechainiciovigencia?.substr(0, 10), element.fechafinvigencia?.substr(0, 10), element.jurisdiccion, element.tasaimpuesto, element.fechacreacion?.substr(0, 10)];
       rows.push(temp);
     })
 
-    var doc1 = new jsPDF();
+    var doc1 = new jsPDF({ orientation: "landscape" });
 
     doc1.setFontSize(18);
-    doc1.text('Consultas DM: Tipo de Cambio TAX_RATES', 11, 8);
+    doc1.text('Consultas DM: TAX_RATES', 11, 8);
     doc1.setFontSize(11);
     doc1.setTextColor(100);
 
@@ -370,7 +640,7 @@ export class Impuestos implements OnInit {
     doc1.output('dataurlnewwindow')
 
     // below line for Download PDF document  
-    doc1.save('Consultas_DM_Impuestos_TAX_RATES.pdf');
+    doc1.save('Consultas_DM_TAX_RATES.pdf');
   }
 
   createPdfVCR() {
@@ -378,14 +648,14 @@ export class Impuestos implements OnInit {
     var rows = [];
 
     this.dataResponseTableVCR.forEach(element => {
-      var temp = [element.codigoimpuesto, element.fechavigencia, element.tasaimpuesto, element.fechacreacion];
+      var temp = [element.mensajeerror, element.codigoimpuesto, element.fechavigencia?.substr(0, 10), element.tasaimpuesto, element.fechacreacion?.substr(0, 10)];
       rows.push(temp);
     })
 
-    var doc1 = new jsPDF();
+    var doc1 = new jsPDF({ orientation: "landscape" });
 
     doc1.setFontSize(18);
-    doc1.text('Consultas DM: Tipo de Cambio VAT_CODE_RATES', 11, 8);
+    doc1.text('Consultas DM: VAT_CODE_RATES', 11, 8);
     doc1.setFontSize(11);
     doc1.setTextColor(100);
 
@@ -402,7 +672,7 @@ export class Impuestos implements OnInit {
     doc1.output('dataurlnewwindow')
 
     // below line for Download PDF document  
-    doc1.save('Consultas_DM_Impuestos_VAT_CODE_RATES.pdf');
+    doc1.save('Consultas_DM_VAT_CODE_RATES.pdf');
   }
 
   createPdfVD() {
@@ -410,14 +680,14 @@ export class Impuestos implements OnInit {
     var rows = [];
 
     this.dataResponseTableVD.forEach(element => {
-      var temp = [element.regionimpuestos, element.dept, element.tipoimpuesto, element.codigoimpuesto, element.fechacreacion];
+      var temp = [element.mensajeerror, element.regionimpuestos, element.dept, element.tipoimpuesto, element.codigoimpuesto, element.fechacreacion?.substr(0, 10)];
       rows.push(temp);
     })
 
-    var doc1 = new jsPDF();
+    var doc1 = new jsPDF({ orientation: "landscape" });
 
     doc1.setFontSize(18);
-    doc1.text('Consultas DM: Tipo de Cambio VAT_DEPS', 11, 8);
+    doc1.text('Consultas DM: VAT_DEPS', 11, 8);
     doc1.setFontSize(11);
     doc1.setTextColor(100);
 
@@ -434,7 +704,7 @@ export class Impuestos implements OnInit {
     doc1.output('dataurlnewwindow')
 
     // below line for Download PDF document  
-    doc1.save('Consultas_DM_Impuestos_VAT_DEPS.pdf');
+    doc1.save('Consultas_DM_VAT_DEPS.pdf');
   }
 
   createPdfVI() {
@@ -442,14 +712,14 @@ export class Impuestos implements OnInit {
     var rows = [];
 
     this.dataResponseTableVI.forEach(element => {
-      var temp = [element.item, element.region, element.fechavigencia, element.tipoimpuesto, element.codigoimpuesto, element.tasaimpuesto, element.fechacreacion];
+      var temp = [element.mensajeerror, element.item, element.region, element.fechavigencia?.substr(0, 10), element.tipoimpuesto, element.codigoimpuesto, element.tasaimpuesto, element.fechacreacion?.substr(0, 10)];
       rows.push(temp);
     })
 
-    var doc1 = new jsPDF();
+    var doc1 = new jsPDF({ orientation: "landscape" });
 
     doc1.setFontSize(18);
-    doc1.text('Consultas DM: Tipo de Cambio VAT_ITEM', 11, 8);
+    doc1.text('Consultas DM: VAT_ITEM', 11, 8);
     doc1.setFontSize(11);
     doc1.setTextColor(100);
 
@@ -466,7 +736,40 @@ export class Impuestos implements OnInit {
     doc1.output('dataurlnewwindow')
 
     // below line for Download PDF document  
-    doc1.save('Consultas_DM_Impuestos_VAT_ITEM.pdf');
+    doc1.save('Consultas_DM_VAT_ITEM.pdf');
   }
 
+  /*fetchPosts(): Observable<GeocodeStore[]> {
+    return this.http.get<Object[]>('http://10.184.17.48:7003/ords/nucleo/fr006/geocode_store/?fechaInicio=null&fechaFin=null').pipe(
+      map(data => data['items'].map(o => this.toGeocodeStore(o) ))
+    );
+  }
+
+  private toGeocodeStore(obj: any): GeocodeStore {
+    console.log(obj);
+    const address = obj.address;
+    return {
+      mensajeerror: obj.mensajeerror,
+      numtienda: obj.numtienda,
+      entidad: obj.entidad,
+      fechacreacion: obj.fechacreacion
+    };
+  }
+
+  ejecutarGeocodeStore() {
+    this.fetchPosts().subscribe(geocodeStore => {
+       this.dataResponseGS = new MatTableDataSource(geocodeStore);
+       this.dataResponseGS.sort = this.sort;
+       this.dataResponseGS.paginator = this.paginator;
+    });
+  }*/
+
+}
+
+
+export interface GeocodeStore {
+  mensajeerror: string,
+  numtienda: number
+  entidad: string,
+  fechacreacion: string
 }

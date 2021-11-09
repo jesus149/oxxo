@@ -1,18 +1,8 @@
-<nav class="navbar navbar-expand-lg navbar-absolute fixed-top navbar-transparent">
-    <div class="container-fluid">
-        <div class="navbar-wrapper">
-            <div class="navbar-toggle">
-            </div>
-            <a class="navbar-brand" href="javascript:void(0)">Impuestos</a>
-        </div>
-    </div>
-</nav>
-
 <div class="row">
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title"> Consultas DM: Impuestos</h4>
+                <h2 class="card-title"> Consultas DM: Impuestos</h2>
             </div>
             <div class="card-header">
                 <div class="row">
@@ -30,36 +20,49 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-2 px-1">
+                    <div class="px-1">
                         <div class="update ml-auto mr-auto">
                             <button (click)="buscar(fechaInicio.value, fechaFin.value)"
-                                class="btn btn-primary btn-round">Ejecutar</button>
+                                class="btn btn-primary-one btn-round">Ejecutar</button>
                         </div>
                     </div>
-                    <div class="col-md-2 px-1">
+                    <div class="px-1">
                         <div class="update ml-auto mr-auto">
-                            <button (click)="createPdf()" class="btn btn-primary btn-round">Imprimir</button>
-                        </div>
-                    </div>
-                    <div class="col-md-2 px-1">
-                        <div class="update ml-auto mr-auto">
-                            <button class="btn btn-primary btn-round" routerLink="/consultasDM">Salir</button>
+                            <button class="btn btn-primary-one btn-round" routerLink="/consultasDM">Salir</button>
                         </div>
                     </div>
                 </div>
             </div>
-            <br><br>
-            <p class="card-title">VAT CODES</p>
+            <hr>
+            <div class="card-header">
+                <h2 class="card-title">VAT CODES</h2>
+            </div>
+            <div *ngIf='showSpinnerVC' class="card-header">
+                <mat-spinner></mat-spinner>
+            </div>
+            <div *ngIf='showComponentsVC' class="col-md-1 px-1">
+                <div class="update ml-auto mr-auto">
+                    <button (click)="createPdfVC()" class="btn btn-primary-two btn-round">Imprimir</button>
+                </div>
+            </div>
+
+            <div *ngIf='alertSuccessVC' class="alert alert-success" role="alert">
+                Los datos se encuentran sincronizados en el día de búsqueda !
+            </div>
+            <div *ngIf='alertElementsVC' class="alert alert-success" role="alert">
+                Se han encontrado {{numElementsVC}} registros !
+                <div *ngIf='hideButtonMostarVC' class="update ml-auto mr-auto">
+                    <button (click)="showTableVC()" class="btn btn-primary-two btn-round">Mostar</button>
+                </div>
+            </div>
+            <div *ngIf='alertWarningVC' class="alert alert-warning" role="alert">
+                El servicio no se encuentra disponible !
+            </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <div class="mat-elevation-z8">
-                        <table mat-table [dataSource]="dataResponseVC" matSort class="mat-elevation-z8">
-
-                            <!-- Position Column -->
-                            <ng-container matColumnDef="id">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
-                                <td mat-cell *matCellDef="let element">{{element.id}}</td>
-                            </ng-container>
+                        <table mat-table #SortVC="matSort" [dataSource]="dataResponseVC" matSort
+                            class="mat-elevation-z8">
 
                             <!-- Position Column -->
                             <ng-container matColumnDef="mensajeerror">
@@ -67,44 +70,69 @@
                                 <td mat-cell *matCellDef="let element"> {{element.mensajeerror}} </td>
                             </ng-container>
 
+                            <!-- Position Column -->
+                            <ng-container matColumnDef="id">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>id</th>
+                                <td mat-cell *matCellDef="let element">{{element.id}}</td>
+                            </ng-container>
+
                             <!-- Name Column -->
                             <ng-container matColumnDef="vatcode">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Vat Code </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> vat_code </th>
                                 <td mat-cell *matCellDef="let element"> {{element.vatcode}} </td>
                             </ng-container>
 
                             <!-- Weight Column -->
                             <ng-container matColumnDef="vatcodedesc">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Vat Code Descripcion </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> vat_code_desc </th>
                                 <td mat-cell *matCellDef="let element"> {{element.vatcodedesc}} </td>
                             </ng-container>
 
                             <!-- Symbol Column -->
                             <ng-container matColumnDef="fechacreacion">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha activación </th>
-                                <td mat-cell *matCellDef="let element"> {{element.fechacreacion}} </td>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> create_date </th>
+                                <td mat-cell *matCellDef="let element"> {{element.fechacreacion?.substr(0,10)}} </td>
                             </ng-container>
 
-                            <tr mat-header-row *matHeaderRowDef="displayedColumnsCV"></tr>
-                            <tr mat-row *matRowDef="let row; columns: displayedColumnsCV;"></tr>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumnsVC"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumnsVC;"></tr>
                         </table>
 
-                        <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
+                        <mat-paginator #PaginatorVC="matPaginator" [pageSizeOptions]="[10, 25, 50]"
+                            showFirstLastButtons></mat-paginator>
                     </div>
                 </div>
             </div>
-            <br><br>
-            <p class="card-title">VAT REGIONS</p>
+            <hr>
+            <div class="card-header">
+                <h2 class="card-title">VAT REGIONS</h2>
+            </div>
+            <div *ngIf='showSpinnerVR' class="card-header">
+                <mat-spinner></mat-spinner>
+            </div>
+            <div *ngIf='showComponentsVR' class="col-md-1 px-1">
+                <div class="update ml-auto mr-auto">
+                    <button (click)="createPdfVR()" class="btn btn-primary-two btn-round">Imprimir</button>
+                </div>
+            </div>
+
+            <div *ngIf='alertSuccessVR' class="alert alert-success" role="alert">
+                Los datos se encuentran sincronizados en el día de búsqueda !
+            </div>
+            <div *ngIf='alertElementsVR' class="alert alert-success" role="alert">
+                Se han encontrado {{numElementsVR}} registros !
+                <div *ngIf='hideButtonMostarVR' class="update ml-auto mr-auto">
+                    <button (click)="showTableVR()" class="btn btn-primary-two btn-round">Mostar</button>
+                </div>
+            </div>
+            <div *ngIf='alertWarningVR' class="alert alert-warning" role="alert">
+                El servicio no se encuentra disponible !
+            </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <div class="mat-elevation-z8">
-                        <table mat-table [dataSource]="dataResponseVR" matSort class="mat-elevation-z8">
-
-                            <!-- Position Column -->
-                            <ng-container matColumnDef="id">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
-                                <td mat-cell *matCellDef="let element">{{element.id}}</td>
-                            </ng-container>
+                        <table mat-table #SortVR="matSort" [dataSource]="dataResponseVR" matSort
+                            class="mat-elevation-z8">
 
                             <!-- Position Column -->
                             <ng-container matColumnDef="mensajeerror">
@@ -112,371 +140,586 @@
                                 <td mat-cell *matCellDef="let element"> {{element.mensajeerror}} </td>
                             </ng-container>
 
+                            <!-- Position Column -->
+                            <ng-container matColumnDef="id">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>id</th>
+                                <td mat-cell *matCellDef="let element">{{element.id}}</td>
+                            </ng-container>
+
                             <!-- Name Column -->
                             <ng-container matColumnDef="vatregion">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Vat Region </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> vat_region </th>
                                 <td mat-cell *matCellDef="let element"> {{element.vatregion}} </td>
                             </ng-container>
 
                             <!-- Weight Column -->
                             <ng-container matColumnDef="vatregionname">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Vat Region Name </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> vat_region_name </th>
                                 <td mat-cell *matCellDef="let element"> {{element.vatregionname}} </td>
                             </ng-container>
 
                             <!-- Weight Column -->
                             <ng-container matColumnDef="vattype">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Vat Type </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> vat_region_type </th>
                                 <td mat-cell *matCellDef="let element"> {{element.vattype}} </td>
                             </ng-container>
 
                             <!-- Symbol Column -->
                             <ng-container matColumnDef="fechacreacion">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha activación </th>
-                                <td mat-cell *matCellDef="let element"> {{element.fechacreacion}} </td>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> create_date </th>
+                                <td mat-cell *matCellDef="let element"> {{element.fechacreacion?.substr(0,10)}} </td>
                             </ng-container>
 
                             <tr mat-header-row *matHeaderRowDef="displayedColumnsVR"></tr>
                             <tr mat-row *matRowDef="let row; columns: displayedColumnsVR;"></tr>
                         </table>
 
-                        <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
+                        <mat-paginator #PaginatorVR="matPaginator" [pageSizeOptions]="[10, 25, 50]"
+                            showFirstLastButtons></mat-paginator>
                     </div>
                 </div>
             </div>
-            <br><br>
-            <p class="card-title">GEOCODE STORE</p>
+            <hr>
+            <div class="card-header">
+                <h2 class="card-title">GEOCODE STORE</h2>
+            </div>
+            <div *ngIf='showSpinnerGS' class="card-header">
+                <mat-spinner></mat-spinner>
+            </div>
+            <div *ngIf='showComponentsGS' class="col-md-1 px-1">
+                <div class="update ml-auto mr-auto">
+                    <button (click)="createPdfGS()" class="btn btn-primary-two btn-round">Imprimir</button>
+                </div>
+            </div>
+
+            <div *ngIf='alertSuccessGS' class="alert alert-success" role="alert">
+                Los datos se encuentran sincronizados en el día de búsqueda !
+            </div>
+            <div *ngIf='alertElementsGS' class="alert alert-success" role="alert">
+                Se han encontrado {{numElementsGS}} registros !
+                <div *ngIf='hideButtonMostarGS' class="update ml-auto mr-auto">
+                    <button (click)="showTableGS()" class="btn btn-primary-two btn-round">Mostar</button>
+                </div>
+            </div>
+            <div *ngIf='alertWarningGS' class="alert alert-warning" role="alert">
+                El servicio no se encuentra disponible !
+            </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <div class="mat-elevation-z8">
-                        <table mat-table [dataSource]="dataResponseGS" matSort class="mat-elevation-z8">
+                        <table mat-table #SortGS="matSort" [dataSource]="dataResponseGS" matSort
+                            class="mat-elevation-z8">
+
+                            <!-- Position Column -->
+                            <ng-container matColumnDef="mensajeerror">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Mensaje </th>
+                                <td mat-cell *matCellDef="let element"> {{element.mensajeerror}} </td>
+                            </ng-container>
 
                             <!-- Position Column -->
                             <ng-container matColumnDef="numtienda">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header># Tienda</th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>store</th>
                                 <td mat-cell *matCellDef="let element">{{element.numtienda}}</td>
                             </ng-container>
 
                             <!-- Position Column -->
                             <ng-container matColumnDef="entidad">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Entidad </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>state_geocode_id </th>
                                 <td mat-cell *matCellDef="let element"> {{element.entidad}} </td>
                             </ng-container>
 
                             <!-- Symbol Column -->
                             <ng-container matColumnDef="fechacreacion">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha creacion </th>
-                                <td mat-cell *matCellDef="let element"> {{element.fechacreacion}} </td>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> create_date </th>
+                                <td mat-cell *matCellDef="let element"> {{element.fechacreacion?.substr(0,10)}} </td>
                             </ng-container>
 
                             <tr mat-header-row *matHeaderRowDef="displayedColumnsGS"></tr>
                             <tr mat-row *matRowDef="let row; columns: displayedColumnsGS;"></tr>
                         </table>
 
-                        <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
+                        <mat-paginator #PaginatorGS="matPaginator" [pageSizeOptions]="[10, 25, 50]"
+                            showFirstLastButtons></mat-paginator>
                     </div>
                 </div>
             </div>
-            <br><br>
-            <p class="card-title">GEOCODE TXCDE</p>
+            <hr>
+            <div class="card-header">
+                <h2 class="card-title">GEOCODE TXCDE</h2>
+            </div>
+            <div *ngIf='showSpinnerGT' class="card-header">
+                <mat-spinner></mat-spinner>
+            </div>
+            <div *ngIf='showComponentsGT' class="col-md-1 px-1">
+                <div class="update ml-auto mr-auto">
+                    <button (click)="createPdfGT()" class="btn btn-primary-two btn-round">Imprimir</button>
+                </div>
+            </div>
+
+            <div *ngIf='alertSuccessGT' class="alert alert-success" role="alert">
+                Los datos se encuentran sincronizados en el día de búsqueda !
+            </div>
+            <div *ngIf='alertElementsGT' class="alert alert-success" role="alert">
+                Se han encontrado {{numElementsGT}} registros !
+                <div *ngIf='hideButtonMostarGT' class="update ml-auto mr-auto">
+                    <button (click)="showTableGT()" class="btn btn-primary-two btn-round">Mostar</button>
+                </div>
+            </div>
+            <div *ngIf='alertWarningGT' class="alert alert-warning" role="alert">
+                El servicio no se encuentra disponible !
+            </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <div class="mat-elevation-z8">
-                        <table mat-table [dataSource]="dataResponseGT" matSort class="mat-elevation-z8">
+                        <table mat-table #SortGT="matSort" [dataSource]="dataResponseGT" matSort
+                            class="mat-elevation-z8">
+
+                            <!-- Position Column -->
+                            <ng-container matColumnDef="mensajeerror">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Mensaje </th>
+                                <td mat-cell *matCellDef="let element"> {{element.mensajeerror}} </td>
+                            </ng-container>
 
                             <!-- Position Column -->
                             <ng-container matColumnDef="estado">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>geocode_level</th>
                                 <td mat-cell *matCellDef="let element">{{element.estado}}</td>
                             </ng-container>
 
                             <!-- Position Column -->
                             <ng-container matColumnDef="entidad">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Entidad </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>state_geocode_id </th>
                                 <td mat-cell *matCellDef="let element"> {{element.entidad}} </td>
                             </ng-container>
 
                             <!-- Name Column -->
                             <ng-container matColumnDef="tipoimpuesto">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Tasa impuesto </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> tax_type_id </th>
                                 <td mat-cell *matCellDef="let element"> {{element.tipoimpuesto}} </td>
                             </ng-container>
 
                             <!-- Weight Column -->
                             <ng-container matColumnDef="fechainiciovigencia">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha inicio vigencia </th>
-                                <td mat-cell *matCellDef="let element"> {{element.fechainiciovigencia}} </td>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> start_date </th>
+                                <td mat-cell *matCellDef="let element"> {{element.fechainiciovigencia?.substr(0,10)}}
+                                </td>
                             </ng-container>
 
                             <!-- Weight Column -->
                             <ng-container matColumnDef="fechafinvigencia">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha fin vigencia </th>
-                                <td mat-cell *matCellDef="let element"> {{element.fechafinvigencia}} </td>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> end_date </th>
+                                <td mat-cell *matCellDef="let element"> {{element.fechafinvigencia?.substr(0,10)}} </td>
                             </ng-container>
 
                             <!-- Weight Column -->
                             <ng-container matColumnDef="jurisdiccion">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Jurisdiccion </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> tax_jurisdiction_id </th>
                                 <td mat-cell *matCellDef="let element"> {{element.jurisdiccion}} </td>
                             </ng-container>
 
                             <!-- Symbol Column -->
                             <ng-container matColumnDef="fechacreacion">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha creacion </th>
-                                <td mat-cell *matCellDef="let element"> {{element.fechacreacion}} </td>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> create_date </th>
+                                <td mat-cell *matCellDef="let element"> {{element.fechacreacion?.substr(0,10)}} </td>
                             </ng-container>
 
                             <tr mat-header-row *matHeaderRowDef="displayedColumnsGT"></tr>
                             <tr mat-row *matRowDef="let row; columns: displayedColumnsGT;"></tr>
                         </table>
 
-                        <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
+                        <mat-paginator #PaginatorGT="matPaginator" [pageSizeOptions]="[10, 25, 50]"
+                            showFirstLastButtons></mat-paginator>
                     </div>
                 </div>
             </div>
-            <br><br>
-            <p class="card-title">PRODUCT TAX CODE</p>
+            <hr>
+            <div class="card-header">
+                <h2 class="card-title">PRODUCT TAX CODE</h2>
+            </div>
+            <div *ngIf='showSpinnerPTC' class="card-header">
+                <mat-spinner></mat-spinner>
+            </div>
+            <div *ngIf='showComponentsPTC' class="col-md-1 px-1">
+                <div class="update ml-auto mr-auto">
+                    <button (click)="createPdfPTC()" class="btn btn-primary-two btn-round">Imprimir</button>
+                </div>
+            </div>
+
+            <div *ngIf='alertSuccessPTC' class="alert alert-success" role="alert">
+                Los datos se encuentran sincronizados en el día de búsqueda !
+            </div>
+            <div *ngIf='alertElementsPTC' class="alert alert-success" role="alert">
+                Se han encontrado {{numElementsPTC}} registros !
+                <div *ngIf='hideButtonMostarPTC' class="update ml-auto mr-auto">
+                    <button (click)="showTablePTC()" class="btn btn-primary-two btn-round">Mostar</button>
+                </div>
+            </div>
+            <div *ngIf='alertWarningPTC' class="alert alert-warning" role="alert">
+                El servicio no se encuentra disponible !
+            </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <div class="mat-elevation-z8">
-                        <table mat-table [dataSource]="dataResponsePTC" matSort class="mat-elevation-z8">
+                        <table mat-table #SortPTC="matSort" [dataSource]="dataResponsePTC" matSort
+                            class="mat-elevation-z8">
 
                             <!-- Position Column -->
-                            <ng-container matColumnDef="item">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Item</th>
-                                <td mat-cell *matCellDef="let element">{{element.item}}</td>
+                            <ng-container matColumnDef="mensajeerror">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Mensaje </th>
+                                <td mat-cell *matCellDef="let element"> {{element.mensajeerror}} </td>
+                            </ng-container>
+
+                            <!-- Position Column -->
+                            <ng-container matColumnDef="idcreacion">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>create_id </th>
+                                <td mat-cell *matCellDef="let element"> {{element.idcreacion}} </td>
                             </ng-container>
 
                             <!-- Position Column -->
                             <ng-container matColumnDef="tipoimpuesto">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Tipo impuesto </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>tax_type_id </th>
                                 <td mat-cell *matCellDef="let element"> {{element.tipoimpuesto}} </td>
-                            </ng-container>
-
-                            <!-- Name Column -->
-                            <ng-container matColumnDef="fechainiciovigencia">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha inicio vigencia </th>
-                                <td mat-cell *matCellDef="let element"> {{element.fechainiciovigencia}} </td>
-                            </ng-container>
-
-                            <!-- Weight Column -->
-                            <ng-container matColumnDef="fechafinvigencia">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha fin vigencia </th>
-                                <td mat-cell *matCellDef="let element"> {{element.fechafinvigencia}} </td>
                             </ng-container>
 
                             <!-- Weight Column -->
                             <ng-container matColumnDef="jurisdiccion">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Jurisdiccion </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> tax_jurisdiction_id </th>
                                 <td mat-cell *matCellDef="let element"> {{element.jurisdiccion}} </td>
                             </ng-container>
 
                             <!-- Symbol Column -->
                             <ng-container matColumnDef="fechacreacion">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha creacion </th>
-                                <td mat-cell *matCellDef="let element"> {{element.fechacreacion}} </td>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> create_date </th>
+                                <td mat-cell *matCellDef="let element"> {{element.fechacreacion?.substr(0,10)}} </td>
                             </ng-container>
 
                             <tr mat-header-row *matHeaderRowDef="displayedColumnsPTC"></tr>
                             <tr mat-row *matRowDef="let row; columns: displayedColumnsPTC;"></tr>
                         </table>
 
-                        <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
+                        <mat-paginator #PaginatorPTC="matPaginator" [pageSizeOptions]="[10, 25, 50]"
+                            showFirstLastButtons></mat-paginator>
                     </div>
                 </div>
             </div>
-            <br><br>
-            <p class="card-title">TAX RATES</p>
+            <hr>
+            <div class="card-header">
+                <h2 class="card-title">TAX RATES</h2>
+            </div>
+            <div *ngIf='showSpinnerTR' class="card-header">
+                <mat-spinner></mat-spinner>
+            </div>
+            <div *ngIf='showComponentsTR' class="col-md-1 px-1">
+                <div class="update ml-auto mr-auto">
+                    <button (click)="createPdfTR()" class="btn btn-primary-two btn-round">Imprimir</button>
+                </div>
+            </div>
+
+            <div *ngIf='alertSuccessTR' class="alert alert-success" role="alert">
+                Los datos se encuentran sincronizados en el día de búsqueda !
+            </div>
+            <div *ngIf='alertElementsTR' class="alert alert-success" role="alert">
+                Se han encontrado {{numElementsTR}} registros !
+                <div *ngIf='hideButtonMostarTR' class="update ml-auto mr-auto">
+                    <button (click)="showTableTR()" class="btn btn-primary-two btn-round">Mostar</button>
+                </div>
+            </div>
+            <div *ngIf='alertWarningTR' class="alert alert-warning" role="alert">
+                El servicio no se encuentra disponible !
+            </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <div class="mat-elevation-z8">
-                        <table mat-table [dataSource]="dataResponseTR" matSort class="mat-elevation-z8">
+                        <table mat-table #SortTR="matSort" [dataSource]="dataResponseTR" matSort
+                            class="mat-elevation-z8">
+
+                            <!-- Position Column -->
+                            <ng-container matColumnDef="mensajeerror">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Mensaje </th>
+                                <td mat-cell *matCellDef="let element"> {{element.mensajeerror}} </td>
+                            </ng-container>
 
                             <!-- Position Column -->
                             <ng-container matColumnDef="tipoimpuesto">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Tipo impuesto </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>tax_type_id </th>
                                 <td mat-cell *matCellDef="let element"> {{element.tipoimpuesto}} </td>
                             </ng-container>
 
                             <!-- Name Column -->
                             <ng-container matColumnDef="fechainiciovigencia">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha inicio vigencia </th>
-                                <td mat-cell *matCellDef="let element"> {{element.fechainiciovigencia}} </td>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> start_date </th>
+                                <td mat-cell *matCellDef="let element"> {{element.fechainiciovigencia?.substr(0,10)}}
+                                </td>
                             </ng-container>
 
                             <!-- Weight Column -->
                             <ng-container matColumnDef="fechafinvigencia">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha fin vigencia </th>
-                                <td mat-cell *matCellDef="let element"> {{element.fechafinvigencia}} </td>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> end_date </th>
+                                <td mat-cell *matCellDef="let element"> {{element.fechafinvigencia?.substr(0,10)}} </td>
                             </ng-container>
 
                             <!-- Weight Column -->
                             <ng-container matColumnDef="jurisdiccion">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Jurisdiccion </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> tax_jurisdiction_id_bk </th>
                                 <td mat-cell *matCellDef="let element"> {{element.jurisdiccion}} </td>
                             </ng-container>
 
                             <!-- Position Column -->
                             <ng-container matColumnDef="tasaimpuesto">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Tasa impuesto</th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>tax_rate_bk</th>
                                 <td mat-cell *matCellDef="let element">{{element.tasaimpuesto}}</td>
                             </ng-container>
 
                             <!-- Symbol Column -->
                             <ng-container matColumnDef="fechacreacion">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha creacion </th>
-                                <td mat-cell *matCellDef="let element"> {{element.fechacreacion}} </td>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> create_date </th>
+                                <td mat-cell *matCellDef="let element"> {{element.fechacreacion?.substr(0,10)}} </td>
                             </ng-container>
 
                             <tr mat-header-row *matHeaderRowDef="displayedColumnsTR"></tr>
                             <tr mat-row *matRowDef="let row; columns: displayedColumnsTR;"></tr>
                         </table>
 
-                        <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
+                        <mat-paginator #PaginatorTR="matPaginator" [pageSizeOptions]="[10, 25, 50]"
+                            showFirstLastButtons></mat-paginator>
                     </div>
                 </div>
             </div>
-            <br><br>
-            <p class="card-title">VAT CODE RATES</p>
+            <hr>
+            <div class="card-header">
+                <h2 class="card-title">VAT CODE RATES</h2>
+            </div>
+            <div *ngIf='showSpinnerVCR' class="card-header">
+                <mat-spinner></mat-spinner>
+            </div>
+            <div *ngIf='showComponentsVCR' class="col-md-1 px-1">
+                <div class="update ml-auto mr-auto">
+                    <button (click)="createPdfVCR()" class="btn btn-primary-two btn-round">Imprimir</button>
+                </div>
+            </div>
+
+            <div *ngIf='alertSuccessVCR' class="alert alert-success" role="alert">
+                Los datos se encuentran sincronizados en el día de búsqueda !
+            </div>
+            <div *ngIf='alertElementsVCR' class="alert alert-success" role="alert">
+                Se han encontrado {{numElementsVCR}} registros !
+                <div *ngIf='hideButtonMostarVCR' class="update ml-auto mr-auto">
+                    <button (click)="showTableVCR()" class="btn btn-primary-two btn-round">Mostar</button>
+                </div>
+            </div>
+            <div *ngIf='alertWarningVCR' class="alert alert-warning" role="alert">
+                El servicio no se encuentra disponible !
+            </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <div class="mat-elevation-z8">
-                        <table mat-table [dataSource]="dataResponseVCR" matSort class="mat-elevation-z8">
+                        <table mat-table #SortVCR="matSort" [dataSource]="dataResponseVCR" matSort
+                            class="mat-elevation-z8">
+
+                            <!-- Position Column -->
+                            <ng-container matColumnDef="mensajeerror">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Mensaje </th>
+                                <td mat-cell *matCellDef="let element"> {{element.mensajeerror}} </td>
+                            </ng-container>
 
                             <!-- Position Column -->
                             <ng-container matColumnDef="codigoimpuesto">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Codigo impuesto </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>vat_code </th>
                                 <td mat-cell *matCellDef="let element"> {{element.codigoimpuesto}} </td>
                             </ng-container>
 
                             <!-- Name Column -->
                             <ng-container matColumnDef="fechavigencia">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha vigencia </th>
-                                <td mat-cell *matCellDef="let element"> {{element.fechavigencia}} </td>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> active_date </th>
+                                <td mat-cell *matCellDef="let element"> {{element.fechavigencia?.substr(0,10)}} </td>
                             </ng-container>
 
                             <!-- Weight Column -->
                             <ng-container matColumnDef="tasaimpuesto">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Tasa impuesto </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> vat_rate </th>
                                 <td mat-cell *matCellDef="let element"> {{element.tasaimpuesto}} </td>
                             </ng-container>
 
                             <!-- Symbol Column -->
                             <ng-container matColumnDef="fechacreacion">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha creacion </th>
-                                <td mat-cell *matCellDef="let element"> {{element.fechacreacion}} </td>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> create_date </th>
+                                <td mat-cell *matCellDef="let element"> {{element.fechacreacion?.substr(0,10)}} </td>
                             </ng-container>
 
                             <tr mat-header-row *matHeaderRowDef="displayedColumnsVCR"></tr>
                             <tr mat-row *matRowDef="let row; columns: displayedColumnsVCR;"></tr>
                         </table>
 
-                        <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
+                        <mat-paginator #PaginatorVCR="matPaginator" [pageSizeOptions]="[10, 25, 50]"
+                            showFirstLastButtons></mat-paginator>
                     </div>
                 </div>
             </div>
-            <br><br>
-            <p class="card-title">VAT DEPS</p>
+            <hr>
+            <div class="card-header">
+                <h2 class="card-title">VAT DEPS</h2>
+            </div>
+            <div *ngIf='showSpinnerVD' class="card-header">
+                <mat-spinner></mat-spinner>
+            </div>
+            <div *ngIf='showComponentsVD' class="col-md-1 px-1">
+                <div class="update ml-auto mr-auto">
+                    <button (click)="createPdfVD()" class="btn btn-primary-two btn-round">Imprimir</button>
+                </div>
+            </div>
+
+            <div *ngIf='alertSuccessVD' class="alert alert-success" role="alert">
+                Los datos se encuentran sincronizados en el día de búsqueda !
+            </div>
+            <div *ngIf='alertElementsVD' class="alert alert-success" role="alert">
+                Se han encontrado {{numElementsVD}} registros !
+                <div *ngIf='hideButtonMostarVD' class="update ml-auto mr-auto">
+                    <button (click)="showTableVD()" class="btn btn-primary-two btn-round">Mostar</button>
+                </div>
+            </div>
+            <div *ngIf='alertWarningVD' class="alert alert-warning" role="alert">
+                El servicio no se encuentra disponible !
+            </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <div class="mat-elevation-z8">
-                        <table mat-table [dataSource]="dataResponseVD" matSort class="mat-elevation-z8">
+                        <table mat-table #SortVD="matSort" [dataSource]="dataResponseVD" matSort
+                            class="mat-elevation-z8">
+
+                            <!-- Position Column -->
+                            <ng-container matColumnDef="mensajeerror">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Mensaje </th>
+                                <td mat-cell *matCellDef="let element"> {{element.mensajeerror}} </td>
+                            </ng-container>
 
                             <!-- Position Column -->
                             <ng-container matColumnDef="regionimpuestos">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Region impuesto </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>vat_region </th>
                                 <td mat-cell *matCellDef="let element"> {{element.regionimpuestos}} </td>
                             </ng-container>
 
                             <!-- Name Column -->
                             <ng-container matColumnDef="dept">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Dept </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> dept </th>
                                 <td mat-cell *matCellDef="let element"> {{element.dept}} </td>
                             </ng-container>
 
                             <!-- Weight Column -->
                             <ng-container matColumnDef="tipoimpuesto">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo impuesto </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> vat_type </th>
                                 <td mat-cell *matCellDef="let element"> {{element.tipoimpuesto}} </td>
                             </ng-container>
 
                             <!-- Weight Column -->
                             <ng-container matColumnDef="codigoimpuesto">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Codigo impuesto </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> vat_code </th>
                                 <td mat-cell *matCellDef="let element"> {{element.codigoimpuesto}} </td>
                             </ng-container>
 
                             <!-- Symbol Column -->
                             <ng-container matColumnDef="fechacreacion">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha creacion </th>
-                                <td mat-cell *matCellDef="let element"> {{element.fechacreacion}} </td>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> create_date </th>
+                                <td mat-cell *matCellDef="let element"> {{element.fechacreacion?.substr(0,10)}} </td>
                             </ng-container>
 
                             <tr mat-header-row *matHeaderRowDef="displayedColumnsVD"></tr>
                             <tr mat-row *matRowDef="let row; columns: displayedColumnsVD;"></tr>
                         </table>
 
-                        <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
+                        <mat-paginator #PaginatorVD="matPaginator" [pageSizeOptions]="[10, 25, 50]"
+                            showFirstLastButtons></mat-paginator>
                     </div>
                 </div>
             </div>
-            <br><br>
-            <p class="card-title">VAT ITEM</p>
+            <hr>
+            <div class="card-header">
+                <h2 class="card-title">VAT ITEM</h2>
+            </div>
+            <div *ngIf='showSpinnerVI' class="card-header">
+                <mat-spinner></mat-spinner>
+            </div>
+            <div *ngIf='showComponentsVI' class="col-md-1 px-1">
+                <div class="update ml-auto mr-auto">
+                    <button (click)="createPdfVI()" class="btn btn-primary-two btn-round">Imprimir</button>
+                </div>
+            </div>
+
+            <div *ngIf='alertSuccessVI' class="alert alert-success" role="alert">
+                Los datos se encuentran sincronizados en el día de búsqueda !
+            </div>
+            <div *ngIf='alertElementsVI' class="alert alert-success" role="alert">
+                Se han encontrado {{numElementsVI}} registros !
+                <div *ngIf='hideButtonMostarVI' class="update ml-auto mr-auto">
+                    <button (click)="showTableVI()" class="btn btn-primary-two btn-round">Mostar</button>
+                </div>
+            </div>
+            <div *ngIf='alertWarningVI' class="alert alert-warning" role="alert">
+                El servicio no se encuentra disponible !
+            </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <div class="mat-elevation-z8">
-                        <table mat-table [dataSource]="dataResponseVI" matSort class="mat-elevation-z8">
+                        <table mat-table #SortVI="matSort" [dataSource]="dataResponseVI" matSort
+                            class="mat-elevation-z8">
+
+                            <!-- Position Column -->
+                            <ng-container matColumnDef="mensajeerror">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Mensaje </th>
+                                <td mat-cell *matCellDef="let element"> {{element.mensajeerror}} </td>
+                            </ng-container>
 
                             <!-- Position Column -->
                             <ng-container matColumnDef="item">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Item </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>item </th>
                                 <td mat-cell *matCellDef="let element"> {{element.item}} </td>
                             </ng-container>
 
                             <!-- Name Column -->
                             <ng-container matColumnDef="region">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Region </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> vat_region </th>
                                 <td mat-cell *matCellDef="let element"> {{element.region}} </td>
                             </ng-container>
 
                             <!-- Weight Column -->
                             <ng-container matColumnDef="fechavigencia">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha vigencia </th>
-                                <td mat-cell *matCellDef="let element"> {{element.fechavigencia}} </td>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> active_date </th>
+                                <td mat-cell *matCellDef="let element"> {{element.fechavigencia?.substr(0,10)}} </td>
                             </ng-container>
 
                             <!-- Weight Column -->
                             <ng-container matColumnDef="tipoimpuesto">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo impuesto </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> vat_type </th>
                                 <td mat-cell *matCellDef="let element"> {{element.tipoimpuesto}} </td>
                             </ng-container>
 
                             <!-- Weight Column -->
                             <ng-container matColumnDef="codigoimpuesto">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Codigo impuesto </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> vat_code </th>
                                 <td mat-cell *matCellDef="let element"> {{element.codigoimpuesto}} </td>
                             </ng-container>
 
                             <!-- Weight Column -->
                             <ng-container matColumnDef="tasaimpuesto">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Tasa impuesto </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> vat_rate </th>
                                 <td mat-cell *matCellDef="let element"> {{element.tasaimpuesto}} </td>
                             </ng-container>
 
                             <!-- Symbol Column -->
                             <ng-container matColumnDef="fechacreacion">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha creacion </th>
-                                <td mat-cell *matCellDef="let element"> {{element.fechacreacion}} </td>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> create_date </th>
+                                <td mat-cell *matCellDef="let element"> {{element.fechacreacion?.substr(0,10)}} </td>
                             </ng-container>
 
                             <tr mat-header-row *matHeaderRowDef="displayedColumnsVI"></tr>
                             <tr mat-row *matRowDef="let row; columns: displayedColumnsVI;"></tr>
                         </table>
 
-                        <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
+                        <mat-paginator #PaginatorVI="matPaginator" [pageSizeOptions]="[10, 25, 50]"
+                            showFirstLastButtons></mat-paginator>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<ngx-spinner></ngx-spinner>

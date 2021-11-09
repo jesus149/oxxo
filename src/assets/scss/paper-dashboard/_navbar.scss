@@ -1,7 +1,7 @@
 .navbar{
     padding-top: $navbar-padding-base;
     padding-bottom: $navbar-padding-base;
-    min-height: 53px;
+    min-height: 64px;
     margin-bottom: 20px;
 
     a{
@@ -70,7 +70,9 @@
     }
 
     &.navbar-absolute{
-        position: absolute;
+        //position: absolute;
+        //position: fixed;
+        position: sticky;        
         width: 100%;
         padding-top: 10px;
         z-index: 1029;

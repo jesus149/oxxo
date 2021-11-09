@@ -12,6 +12,12 @@ import { CreacionAlmacen } from '../../pages/CreacionAlmacenCEDIS/creacionAlmace
 import { Proveedores } from '../../pages/proveedores/proveedores.component'
 import { Impuestos } from '../../pages/impuestos/impuestos.component'
 import { CreacionTienda } from '../../pages/creacionTienda/creacionTienda.component'
+import { CreacionArticulosServicio } from '../../pages/creacionArticulosServicio/creacionArticulosServicio.component'
+import { CreacionArticulosNormales } from '../../pages/creacionArticulosNormales/creacionArticulosNormales.component'
+import { MantenimientoArticulos } from '../../pages/mantenimientoArticulos/mantenimientoArticulos.component'
+import { CreacionMantenimientoUDAs } from '../../pages/creacionMantenimientoUDAs/creacionMantenimientoUDAs.component'
+import { GestionAlmacenPMO } from '../../pages/gestionAlmacenPMO/gestionAlmacenPMO.component'
+import { GestionAlmacenRecibo } from '../../pages/gestionAlmacenRecibo/gestionAlmacenRecibo.component'
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'consultasDM', component: ConsultasDM },
@@ -23,5 +29,11 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'creacionAlmacen', component: CreacionAlmacen },
     { path: 'proveedores', component: Proveedores },
     { path: 'impuestos', component: Impuestos },
-    { path: 'creacionTienda', component: CreacionTienda }
+    { path: 'creacionTienda', component: CreacionTienda },
+    { path: 'creacionArticulosServicio', component: CreacionArticulosServicio },
+    { path: 'creacionArticulosNormales', component: CreacionArticulosNormales },
+    { path: 'mantenimientoArticulos', component: MantenimientoArticulos },
+    { path: 'creacionMantenimientoUDAs', component: CreacionMantenimientoUDAs },
+    { path: 'gestionAlmacenPMO', component: GestionAlmacenPMO },
+    { path: 'gestionAlmacenRecibo', component: GestionAlmacenRecibo }
 ];
