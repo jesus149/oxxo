@@ -80,7 +80,7 @@ export class GestionAlmacenRecibo implements OnInit {
 
         this.showSpinnerSP = true;
 
-        this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr010/item_supp_country/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
+        this.http.get<any>('http://10.184.17.48:7003/ords/xxmon/fr010/xxmon_item_supp_country_fr010/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
             console.log(response);
             if (response['count'] > 0) {
                 this.responseSP = response;

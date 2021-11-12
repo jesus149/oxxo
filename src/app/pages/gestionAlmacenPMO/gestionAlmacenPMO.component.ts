@@ -80,7 +80,7 @@ export class GestionAlmacenPMO implements OnInit {
 
         this.showSpinnerPM = true;
 
-        this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr011/pmo_route/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
+        this.http.get<any>('http://10.184.17.48:7003/ords/xxmon/fr011/xxmon_pmo_route_fr011/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
             console.log(response);
             if (response['count'] > 0) {
                 this.responsePM = response;

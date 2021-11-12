@@ -97,7 +97,7 @@ export class CreacionAlmacen implements OnInit {
         this.showSpinnerWHSTG = true;
         this.showSpinnerASTG = true;
 
-        this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr003/wh_stg/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
+        this.http.get<any>('http://10.184.17.48:7003/ords/xxmon/fr003/xxmon_wh_fr003/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
             console.log(response);
             if (response['count'] > 0) {
                 this.responseWHSTG = response;
@@ -113,7 +113,7 @@ export class CreacionAlmacen implements OnInit {
             this.showSpinnerWHSTG = false;
         });
 
-        this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr003/addr_stg/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
+        this.http.get<any>('http://10.184.17.48:7003/ords/xxmon/fr003/xxmon_addr_fr003/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
             console.log(response);
             if (response['count'] > 0) {
                 this.responseASTG = response;

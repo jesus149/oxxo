@@ -97,7 +97,7 @@ ngOnInit(): void {
     this.showSpinnerS = true;
     this.showSpinnerSH = true;
 
-    this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr004/store/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
+    this.http.get<any>('http://10.184.17.48:7003/ords/xxmon/fr004/xxmon_store_fr004/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
       console.log(response);
       if (response['count'] > 0) {
         this.responseS = response;
@@ -113,7 +113,7 @@ ngOnInit(): void {
       this.showSpinnerS = false;
     });
 
-    this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr004/store_hierarchy/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
+    this.http.get<any>('http://10.184.17.48:7003/ords/xxmon/fr004/xxmon_store_hierarchy_fr004/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
       console.log(response);
       if (response['count'] > 0) {
         this.responseSH = response;

@@ -144,7 +144,7 @@ ngOnInit(): void {
     this.showSpinnerDSTG = true;
     this.showSpinnerRSTG = true;
 
-    this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr002/area_stg/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
+    this.http.get<any>('http://10.184.17.48:7003/ords/xxmon/fr002/xxmon_area_fr002/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
       console.log(response);
       if (response['count'] > 0) {
         this.responseASGT = response;
@@ -160,7 +160,7 @@ ngOnInit(): void {
       this.showSpinnerASGT = false;
     });
 
-    this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr002/chain_stg/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
+    this.http.get<any>('http://10.184.17.48:7003/ords/xxmon/fr002/xxmon_chain_fr002/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
       console.log(response);
       if (response['count'] > 0) {
         this.responseCSTG = response;
@@ -176,7 +176,7 @@ ngOnInit(): void {
       this.showSpinnerCSTG = false;
     });
 
-    this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr002/comphead_stg/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
+    this.http.get<any>('http://10.184.17.48:7003/ords/xxmon/fr002/xxmon_comphead_fr002/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
       console.log(response);
       if (response['count'] > 0) {
         this.responseCHSTG = response;
@@ -192,7 +192,7 @@ ngOnInit(): void {
       this.showSpinnerCHSTG = false;
     });
 
-    this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr002/district_stg/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
+    this.http.get<any>('http://10.184.17.48:7003/ords/xxmon/fr002/xxmon_district_fr002/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
       console.log(response);
       if (response['count'] > 0) {
         this.responseDSTG = response;
@@ -208,7 +208,7 @@ ngOnInit(): void {
       this.showSpinnerDSTG = false;
     });
 
-    this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr002/region_stg/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
+    this.http.get<any>('http://10.184.17.48:7003/ords/xxmon/fr002/xxmon_region_fr002/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
       console.log(response);
       if (response['count'] > 0) {
         this.responseRSTG = response;

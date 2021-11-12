@@ -37,6 +37,7 @@ export class Login implements OnInit {
     }
 
     ngOnInit(): void {
+        console.log("login")
         this.spinner.show();
         this.route.queryParamMap
             .subscribe((params) => {

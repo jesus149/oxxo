@@ -230,7 +230,7 @@ ngOnInit(): void {
     this.showSpinnerVD = true;
     this.showSpinnerVI = true;
 
-    this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr006/vat_codes/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
+    this.http.get<any>('http://10.184.17.48:7003/ords/xxmon/fr006/xxmon_vat_codes_fr006/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
       console.log(response);
       if (response['count'] > 0) {
         this.responseVC = response;
@@ -246,7 +246,7 @@ ngOnInit(): void {
       this.showSpinnerVC = false;
     });
 
-    this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr006/vat_region/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
+    this.http.get<any>('http://10.184.17.48:7003/ords/xxmon/fr006/xxmon_vat_region_fr006/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
       console.log(response);
       if (response['count'] > 0) {
         this.responseVR = response;
@@ -262,7 +262,7 @@ ngOnInit(): void {
       this.showSpinnerVR = false;
     });
 
-    this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr006/geocode_store/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
+    this.http.get<any>('http://10.184.17.48:7003/ords/xxmon/fr006/xxmon_geocode_store_fr006/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
       console.log(response);
       if (response['count'] > 0) {
         this.responseGS = response;
@@ -278,7 +278,7 @@ ngOnInit(): void {
       this.showSpinnerGS = false;
     });
 
-    this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr006/geocode_txcde/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
+    this.http.get<any>('http://10.184.17.48:7003/ords/xxmon/fr006/xxmon_geocode_txcde_fr006/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
       console.log(response);
       if (response['count'] > 0) {
         this.responseGT = response;
@@ -294,7 +294,7 @@ ngOnInit(): void {
       this.showSpinnerGT = false;
     });
 
-    this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr006/product_tax_code/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
+    this.http.get<any>('http://10.184.17.48:7003/ords/xxmon/fr006/xxmon_product_tax_code_fr006/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
       console.log(response);
       if (response['count'] > 0) {
         this.responsePTC = response;
@@ -310,7 +310,7 @@ ngOnInit(): void {
       this.showSpinnerPTC = false;
     });
 
-    this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr006/tax_rates/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
+    this.http.get<any>('http://10.184.17.48:7003/ords/xxmon/fr006/xxmon_tax_rates_fr006/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
       console.log(response);
       if (response['count'] > 0) {
         this.responseTR = response;
@@ -326,7 +326,7 @@ ngOnInit(): void {
       this.showSpinnerTR = false;
     });
 
-    this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr006/vat_code_rates/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
+    this.http.get<any>('http://10.184.17.48:7003/ords/xxmon/fr006/xxmon_vat_code_rates_fr006/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
       console.log(response);
       if (response['count'] > 0) {
         this.responseVCR = response;
@@ -342,7 +342,7 @@ ngOnInit(): void {
       this.showSpinnerVCR = false;
     });
 
-    this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr006/vat_deps/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
+    this.http.get<any>('http://10.184.17.48:7003/ords/xxmon/fr006/xxmon_vat_deps_fr006/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
       console.log(response);
       if (response['count'] > 0) {
         this.responseVD = response;
@@ -358,7 +358,7 @@ ngOnInit(): void {
       this.showSpinnerVD = false;
     });
 
-    this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr006/vat_item/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
+    this.http.get<any>('http://10.184.17.48:7003/ords/xxmon/fr006/xxmon_vat_item_fr006/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
       console.log(response);
       if (response['count'] > 0) {
         this.responseVI = response;
@@ -735,32 +735,6 @@ ngOnInit(): void {
     // below line for Download PDF document  
     doc1.save('Consultas_DM_VAT_ITEM.pdf');
   }
-
-  /*fetchPosts(): Observable<GeocodeStore[]> {
-    return this.http.get<Object[]>('http://10.184.17.48:7003/ords/nucleo/fr006/geocode_store/?fechaInicio=null&fechaFin=null').pipe(
-      map(data => data['items'].map(o => this.toGeocodeStore(o) ))
-    );
-  }
-
-  private toGeocodeStore(obj: any): GeocodeStore {
-    console.log(obj);
-    const address = obj.address;
-    return {
-      mensajeerror: obj.mensajeerror,
-      numtienda: obj.numtienda,
-      entidad: obj.entidad,
-      fechacreacion: obj.fechacreacion
-    };
-  }
-
-  ejecutarGeocodeStore() {
-    this.fetchPosts().subscribe(geocodeStore => {
-       this.dataResponseGS = new MatTableDataSource(geocodeStore);
-       this.dataResponseGS.sort = this.sort;
-       this.dataResponseGS.paginator = this.paginator;
-    });
-  }*/
-
 }
 
 

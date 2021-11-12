@@ -80,7 +80,7 @@ export class CreacionMantenimientoUDAs implements OnInit {
 
         this.showSpinnerU = true;
 
-        this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr012/uda/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
+        this.http.get<any>('http://10.184.17.48:7003/ords/xxmon/fr012/xxmon_uda_fr012/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
             console.log(response);
             if (response['count'] > 0) {
                 this.responseU = response;

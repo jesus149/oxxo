@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
 
-    console.log("inicio sin path");
+    console.log("AppComponent");
 
     this.route.queryParamMap
       .subscribe((params) => {

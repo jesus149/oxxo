@@ -135,7 +135,7 @@ export class CreacionArticulosServicio implements OnInit {
         this.showSpinnerIS = true;
         this.showSpinnerVI = true;
 
-        this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr008/item_loc/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
+        this.http.get<any>('http://10.184.17.48:7003/ords/xxmon/fr008/xxmon_item_loc_fr008/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
             console.log(response);
             if (response['count'] > 0) {
                 this.responseIL = response;
@@ -151,7 +151,7 @@ export class CreacionArticulosServicio implements OnInit {
             this.showSpinnerIL = false;
         });
 
-        this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr008/item_master/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
+        this.http.get<any>('http://10.184.17.48:7003/ords/xxmon/fr008/xxmon_item_master_fr008/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
             console.log(response);
             if (response['count'] > 0) {
                 this.responseIM = response;
@@ -167,7 +167,7 @@ export class CreacionArticulosServicio implements OnInit {
             this.showSpinnerIM = false;
         });
 
-        this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr008/item_supplier/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
+        this.http.get<any>('http://10.184.17.48:7003/ords/xxmon/fr008/xxmon_item_supplier_fr008/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
             console.log(response);
             if (response['count'] > 0) {
                 this.responseIS = response;
@@ -183,7 +183,7 @@ export class CreacionArticulosServicio implements OnInit {
             this.showSpinnerIS = false;
         });
 
-        this.http.get<any>('http://10.184.17.48:7003/ords/nucleo/fr008/vat_item/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
+        this.http.get<any>('http://10.184.17.48:7003/ords/xxmon/fr008/xxmon_vat_item_fr008/?fechaInicio=' + fInicio + '&fechaFin=' + fFinal + '').subscribe(response => {
             console.log(response);
             if (response['count'] > 0) {
                 this.responseVI = response;
